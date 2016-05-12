@@ -1,0 +1,14 @@
+
+resolver: lts-5.16
+
+packages: 
+ - monad-par/
+ - cloud-haskell/
+
+local-bin-path: ./bin/
+
+extra-deps: []
+
+flags: {}
+
+extra-package-dbs: []
