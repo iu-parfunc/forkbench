@@ -1,9 +1,14 @@
 
-all: spawnbench.exe forkbench.exe
-	gcc --version
+# On Cutter do "module add gcc" to get a new version of GCC.
 
-spawnbench.exe: spawnbench.c
-	gcc -fcilkplus $^ -o $@
+CC=gcc
+OUTDIR=../bin/
 
-forkbench.exe: forkbench.c
-	gcc -fcilkplus $^ -o $@
+all: $(OUTDIR)/spawnbench-cilk.exe $(OUTDIR)/forkbench-cilk.exe
+	$(CC) --version
+
+$(OUTDIR)/spawnbench-cilk.exe: spawnbench.c
+	$(CC) -fcilkplus $^ -o $@
+
+$(OUTDIR)/forkbench-cilk.exe: forkbench.c
+	$(CC) -fcilkplus $^ -o $@

@@ -3,6 +3,7 @@ resolver: lts-5.16
 
 packages: 
  - monad-par/
+ - ghc-sparks/
  - cloud-haskell/
  - location:
      git: git@github.com:rrnewton/criterion-external.git
