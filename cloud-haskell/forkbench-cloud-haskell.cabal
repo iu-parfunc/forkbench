@@ -10,4 +10,5 @@ executable forkbench-cloud-haskell
   ghc-options:         -threaded -Wall -O2 -rtsopts -with-rtsopts=-N
   build-depends:       base
                      , distributed-process
+                     , network-transport-tcp
   default-language:    Haskell2010
