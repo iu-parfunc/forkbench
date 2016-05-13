@@ -20,8 +20,8 @@ remotableDecl [
       spawnbench (sp, 0) = sendChan sp 1
       spawnbench (sp, n) = do
           nid <- getSelfNode
-          let half1 = n `div` 2
-              half2 = half1 + (n `mod` 2)
+          let (half1,rm) = n `quotRem` 2
+              half2      = half1 + rm
           (sp' ,rp')  <- newChan
           (sp'',rp'') <- newChan
           _ <- spawn nid ($(mkClosure 'spawnbench) (sp', half2-1))
