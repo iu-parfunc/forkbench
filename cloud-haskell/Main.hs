@@ -7,6 +7,11 @@ import Control.Monad
 import Control.Distributed.Process
 import Control.Distributed.Process.Closure
 import Control.Distributed.Process.Node
+
+import Criterion.Main
+import Criterion.Types
+
+import Network.Transport (Transport(..))
 import Network.Transport.TCP (createTransport, defaultTCPParameters)
 
 remotableDecl [
@@ -28,14 +33,19 @@ remotableDecl [
 myRemoteTable :: RemoteTable
 myRemoteTable = Main.__remoteTableDecl initRemoteTable
 
-main :: IO ()
-main = do
-  Right transport <- createTransport "127.0.0.1" "10501" defaultTCPParameters
+launch :: Int -> IO ()
+launch iters = do
+  Right transport <- createTransport "127.0.0.1" ("1050" ++ show iters) defaultTCPParameters
   node <- newLocalNode transport myRemoteTable
-  let iters = 1000
   runProcess node $ do
     us <- getSelfNode
     (sp,rp) <- newChan
     _ <- spawnLocal $ spawnbench (sp, iters)
     ans <- receiveChan rp
     liftIO . putStrLn $ "Result: " ++ show ans
+  closeTransport transport
+
+main :: IO ()
+main = defaultMain
+  [ bench "cloud-haskell/spawnbench" (Benchmarkable $ launch . fromIntegral)
+  ]
