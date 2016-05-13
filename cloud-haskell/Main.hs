@@ -12,7 +12,7 @@ import Network.Transport.TCP (createTransport, defaultTCPParameters)
 remotableDecl [
   [d| spawnbench :: (SendPort Int, Int) -> Process ()
       spawnbench (sp, 0) = sendChan sp 1
-      spawnbench (sp, n)
+      spawnbench (sp, n) = do
           nid <- getSelfNode
           let half1 = n `div` 2
               half2 = half1 + (n `mod` 2)
