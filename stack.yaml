@@ -4,7 +4,10 @@ resolver: lts-5.16
 packages: 
  - monad-par/
  - cloud-haskell/
-
+ - location:
+     git: git@github.com:rrnewton/criterion-external.git
+     commit: 0dac58c9b8c28137e3dc5f5a4b4bbe8f77d6c16e
+ 
 local-bin-path: ./bin/
 
 extra-deps: []
