@@ -10,6 +10,7 @@ executable forkbench-cloud-haskell
   ghc-options:         -threaded -Wall -O2 -rtsopts -with-rtsopts=-N
   build-depends:       base
                      , criterion
+                     , deepseq
                      , distributed-process
                      , network-transport
                      , network-transport-tcp

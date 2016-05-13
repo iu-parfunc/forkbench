@@ -1,8 +1,9 @@
+{-# LANGUAGE BangPatterns    #-}
 {-# LANGUAGE TemplateHaskell #-}
-
 module Main where
 
 import Control.Concurrent (threadDelay)
+import Control.DeepSeq (NFData(..))
 import Control.Monad
 import Control.Distributed.Process
 import Control.Distributed.Process.Closure
@@ -33,9 +34,13 @@ remotableDecl [
 myRemoteTable :: RemoteTable
 myRemoteTable = Main.__remoteTableDecl initRemoteTable
 
-launch :: Int -> IO ()
-launch iters = do
-  Right transport <- createTransport "127.0.0.1" ("1050" ++ show iters) defaultTCPParameters
+newTransport :: IO Transport
+newTransport = do
+  Right transport <- createTransport "127.0.0.1" "10501" defaultTCPParameters
+  return transport
+
+launch :: Transport -> Int -> IO ()
+launch transport iters = do
   node <- newLocalNode transport myRemoteTable
   runProcess node $ do
     us <- getSelfNode
@@ -43,9 +48,12 @@ launch iters = do
     _ <- spawnLocal $ spawnbench (sp, iters)
     ans <- receiveChan rp
     liftIO . putStrLn $ "Result: " ++ show ans
-  closeTransport transport
+
+instance NFData Transport where
+  rnf !_ = ()
 
 main :: IO ()
 main = defaultMain
-  [ bench "cloud-haskell/spawnbench" (Benchmarkable $ launch . fromIntegral)
+  [ env newTransport $ \tp ->
+        bench "cloud-haskell/spawnbench" (Benchmarkable $ launch tp . fromIntegral)
   ]
