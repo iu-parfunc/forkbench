@@ -22,6 +22,10 @@ set -x
 # You can do this, but it doesn't make a difference
 # gcc $INCLUDES $hpx/lib/libhpx.so $src/fibonacci.c -o $out/fib.exe
 
+
+# Try compling to .o first:
+gcc -c $INCLUDES $src/fibonacci.c -o $out/fibonacci.o 
+
 # ----------------------------------------
 OPTS=
 # OPTS+="-Wl,-dynamic-linker,/nix/store/bb32xf954imhdrzn7j8h82xs1bx7p3fr-glibc-2.23/lib/ld-linux-x86-64.so.2"
@@ -33,18 +37,18 @@ OPTS=
 
 # Perhaps this would prioritize the correct search location?
 OPTS+=" -Wl,-rpath -Wl,$hpx/lib "
+# -Wl,--verbose 
 # ^ No, it appears to make no difference.
 
 #OPTS+=" -Wl,-R$hpx/lib/ -Wl,--enable-new-dtags"
 
-gcc $OPTS $INCLUDES -L$hpx/lib -lhpx $src/fibonacci.c -o $out/fib.exe
+gcc -v $OPTS $INCLUDES -L$hpx/lib -lhpx $out/fibonacci.o -o $out/fib.exe 
 # ----------------------------------------
 
 
 # Use static lib for HPX:
 # ----------------------------------------
-# ls $hpx/lib
-# gcc $OPTS $INCLUDES -L$hpx/lib libhpx.a $src/fibonacci.c -o $out/fib.exe
+# gcc $INCLUDES $hpx/lib/libhpx.a $src/fibonacci.c -o $out/fib.exe
 
 
 set +x
