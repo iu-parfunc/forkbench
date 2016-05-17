@@ -1,21 +1,28 @@
 
 .phony: all
 
-HTML= reports/cilk.html reports/hpx.html reports/monad-par.html \
-    reports/ghc-sparks.html reports/cloud-haskell.html reports/io-threads.html
+THREADS ?= 1
+
+out = ./reports/$(THREADS)_thread/
+
+HTML= $(out)/ghc-sparks.html $(out)/cloud-haskell.html \
+      $(out)/io-threads.html $(out)/monad-par.html \
+      $(out)/cilk.html $(out)/hpx.html
+
+.phony: all build
 
 # Building
 # ----------------------------------------
 
-all: reports build $(HTML)
+all: $(out) build $(HTML)
 
 build:
 	stack install
 	(cd hpx && make)
 	(cd cilk && make nix)
 
-reports:
-	mkdir -p ./reports
+$(out):
+	mkdir -p $(out)
 
 clean:
 	rm -f cilk/result hpx/result
@@ -26,22 +33,22 @@ clean:
 # ----------------------------------------
 
 # This one needs a long time
-reports/hpx.html:
-	./bin/criterion-external ./bin/spawnbench-hpx.exe --hpx-threads=1 \
-          -- -o $@ --csv reports/hpx.csv -L 100
+$(out)/hpx.html:
+	./bin/criterion-external ./bin/spawnbench-hpx.exe --hpx-threads=$(THREADS) \
+          -- -o $@ --csv $(out)/hpx.csv -L 100
 
-reports/cilk.html:
-	CILK_NWORKERS=1 ./bin/criterion-external ./bin/spawnbench-cilk.exe \
-          -- -o $@ --csv reports/cilk.csv -L 10
+$(out)/cilk.html:
+	CILK_NWORKERS=$(THREADS) ./bin/criterion-external ./bin/spawnbench-cilk.exe \
+          -- -o $@ --csv $(out)/cilk.csv -L 10
 
-reports/monad-par.html:
-	./bin/forkbench-monad-par -o $@ --csv reports/monad-par.csv +RTS -N1
+$(out)/monad-par.html:
+	./bin/forkbench-monad-par -o $@ --csv $(out)/monad-par.csv +RTS -N$(THREADS)
 
-reports/io-threads.html:
-	./bin/forkbench-io-threads.exe -o $@ --csv reports/io-threads.csv +RTS -N1
+$(out)/io-threads.html:
+	./bin/forkbench-io-threads.exe -o $@ --csv $(out)/io-threads.csv +RTS -N$(THREADS)
 
-reports/ghc-sparks.html:
-	./bin/forkbench-ghc-sparks -o $@ --csv reports/ghc-sparks.csv +RTS -N1
+$(out)/ghc-sparks.html:
+	./bin/forkbench-ghc-sparks -o $@ --csv $(out)/ghc-sparks.csv +RTS -N$(THREADS)
 
-reports/cloud-haskell.html:
-	./bin/forkbench-cloud-haskell -o $@ --csv reports/cloud-haskell.csv -L 10 +RTS -N1
+$(out)/cloud-haskell.html:
+	./bin/forkbench-cloud-haskell -o $@ --csv $(out)/cloud-haskell.csv -L 10 +RTS -N$(THREADS)
