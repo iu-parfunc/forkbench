@@ -21,6 +21,18 @@ fn main() {
     if env::args().count() != 2 {
         panic!("Expects exactly one argument!");
     }
+
+    let threads =
+        match std::env::var("NUM_THREADS") {
+            Ok(str) => str.parse::<usize>().unwrap(),
+            _ => panic!("Environment variable NUM_THREADS not set.")
+        };
+    { // Initialize the threadpool (optional):
+        let conf = rayon::Configuration::new().set_num_threads(threads);
+        println!("Running with threads = {:?}", conf.num_threads());
+        initialize(conf).unwrap();
+    }
+    
     match env::args().last() {
         None => panic!("Expects exactly one argument!"),
         Some(num) => {
@@ -29,4 +41,7 @@ fn main() {
             println!("{}",res);
         }
     }
+
+    // These seem bogus currently, it just prints zeros: [2016.05.17]
+    // dump_stats();
 }
