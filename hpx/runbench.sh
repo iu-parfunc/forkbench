@@ -1,11 +1,5 @@
 #!/bin/bash
 
-echo "Hello world"
-
-echo "Inputs are here: $src"
-echo "Current dir: "`pwd`
-echo "Output results go here: $out"
-
 # set -xe
 set -e
 source $stdenv/setup
@@ -24,7 +18,7 @@ set -x
 
 
 # Try compling to .o first:
-gcc -c $INCLUDES $src/fibonacci.c -o $out/fibonacci.o 
+gcc -c $INCLUDES $src/fibonacci.c -o ./fibonacci.o 
 
 # ----------------------------------------
 OPTS=
@@ -42,24 +36,29 @@ OPTS+=" -Wl,-rpath -Wl,$hpx/lib "
 
 #OPTS+=" -Wl,-R$hpx/lib/ -Wl,--enable-new-dtags"
 
-gcc -v $OPTS $INCLUDES -L$hpx/lib -lhpx $out/fibonacci.o -o $out/fib.exe 
+# gcc -v $OPTS $INCLUDES -L$hpx/lib -lhpx ./fibonacci.o -o $out/fib.exe
+
+# Also doesn't set RPATH according to `readelf -a`
+# ld -rpath $hpx/lib --entry main -dynamic-linker $glibc/lib/ld-linux-x86-64.so.2 -L$hpx/lib -lhpx ./fibonacci.o -o $out/fib2.exe 
 # ----------------------------------------
 
 
 # Use static lib for HPX:
 # ----------------------------------------
-# gcc $INCLUDES $hpx/lib/libhpx.a $src/fibonacci.c -o $out/fib.exe
-
+# LIBS="-L$hpx/lib -L$hwloc/lib $hpx/lib/libhpx.a -lpthread $hpx/lib/libffi.a $hpx/lib/libjemalloc.a -lhwloc "
+LIBS="-L$hpx/lib -L$hwloc/lib $hpx/lib/libhpx.a $hpx/lib/libsync.a -lpthread -lffi -ljemalloc -lhwloc -lstdc++ "
+gcc $INCLUDES ./fibonacci.o $LIBS -o $out/fib.exe
 
 set +x
 echo "Here's a snapshot of the expected dynamic links:"
 set -x
 
 ldd $out/fib.exe
-
 $out/fib.exe 10
-
 readelf -a $out/fib.exe | grep PATH
+
+# ldd $out/fib2.exe
+# $out/fib2.exe 10
 
 set +x
 
