@@ -9,17 +9,28 @@ HTML= $(out)/ghc-sparks.html $(out)/cloud-haskell.html \
       $(out)/io-threads.html $(out)/monad-par.html \
       $(out)/cilk.html $(out)/hpx.html
 
-.phony: all build rust
+ALLBUILDS = build-haskell build-hpx build-cilk build-rust
+
+.phony: all build run-rust $(ALLBUILDS)
 
 # Building
 # ----------------------------------------
 
 all: $(out) build $(HTML)
 
-build:
+build: $(ALLBUILDS)
+
+build-haskell:
 	stack install
+
+build-hpx:
 	(cd hpx && make)
+
+build-cilk:
 	(cd cilk && make nix)
+
+build-rust:
+	cd rust && make
 
 $(out):
 	mkdir -p $(out)
@@ -53,6 +64,6 @@ $(out)/ghc-sparks.html:
 $(out)/cloud-haskell.html:
 	./bin/forkbench-cloud-haskell -o $@ --csv $(out)/cloud-haskell.csv -L 10 +RTS -N$(THREADS)
 
-rust: $(out) $(out)/rust-rayon.html
+run-rust: $(out) $(out)/rust-rayon.html
 $(out)/rust-rayon.html: 
 	NUM_THREADS=1 ./bin/criterion-external ./bin/spawnbench-rust-rayon.exe -- -o $@ --csv $(out)/rust-rayon.csv -L 10
