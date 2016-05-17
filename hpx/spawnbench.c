@@ -53,8 +53,8 @@ static int _spawntree_action(int *args, size_t size) {
   };
 
   int ns[] = {
-    (n / 2) - 1,
-    (n / 2) + (n % 2) - 1
+    (n / 2) + (n % 2) - 1,    
+    (n / 2) - 1
   };
 
   hpx_addr_t futures[] = {
@@ -78,8 +78,16 @@ static int _spawntree_action(int *args, size_t size) {
   };
   
   hpx_call(peers[0], _spawntree, futures[0], &ns[0], sizeof(int));
-  hpx_call(peers[1], _spawntree, futures[1], &ns[1], sizeof(int));
-  hpx_lco_get_all(2, futures, sizes, addrs, NULL);
+
+  if (ns[1] > 0) {
+    hpx_call(peers[1], _spawntree, futures[1], &ns[1], sizeof(int));
+    hpx_lco_get_all(2, futures, sizes, addrs, NULL);
+  }
+  else {
+    fns[1] = 1;
+    hpx_lco_get_all(1, futures, sizes, addrs, NULL);
+  }
+  
   hpx_lco_delete(futures[0], HPX_NULL);
   hpx_lco_delete(futures[1], HPX_NULL);
 
