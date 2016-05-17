@@ -53,6 +53,6 @@ $(out)/ghc-sparks.html:
 $(out)/cloud-haskell.html:
 	./bin/forkbench-cloud-haskell -o $@ --csv $(out)/cloud-haskell.csv -L 10 +RTS -N$(THREADS)
 
-rust: $(out)/rust-rayon.html
-$(out)/rust-rayon.html:
-	./bin/criterion-external NUM_THREADS=1 ./bin/spawnbench-rust-rayon -- -o $@ --csv $(out)/rust-rayon.csv -L 10
+rust: $(out) $(out)/rust-rayon.html
+$(out)/rust-rayon.html: 
+	NUM_THREADS=1 ./bin/criterion-external ./bin/spawnbench-rust-rayon.exe -- -o $@ --csv $(out)/rust-rayon.csv -L 10
