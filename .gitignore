@@ -3,3 +3,4 @@
 *.exe
 result
 bin
+.DS_Store

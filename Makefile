@@ -1,20 +1,28 @@
 
 .phony: all
 
-HTML= reports/cilk.html reports/hpx.html
+THREADS ?= 1
+
+out = ./reports/$(THREADS)_thread/
+
+HTML= $(out)/ghc-sparks.html $(out)/cloud-haskell.html \
+      $(out)/io-threads.html $(out)/monad-par.html \
+      $(out)/cilk.html $(out)/hpx.html
+
+.phony: all build rust
 
 # Building
 # ----------------------------------------
 
-all: reports build $(HTML)
+all: $(out) build $(HTML)
 
 build:
 	stack install
 	(cd hpx && make)
 	(cd cilk && make nix)
 
-reports:
-	mkdir -p ./reports
+$(out):
+	mkdir -p $(out)
 
 clean:
 	rm -f cilk/result hpx/result
@@ -25,13 +33,26 @@ clean:
 # ----------------------------------------
 
 # This one needs a long time
-reports/hpx.html:
-	./bin/criterion-external ./bin/spawnbench-hpx.exe --hpx-threads=1 -- -o reports/hpx.html -L 100
+$(out)/hpx.html:
+	./bin/criterion-external ./bin/spawnbench-hpx.exe --hpx-threads=$(THREADS) \
+          -- -o $@ --csv $(out)/hpx.csv -L 100
 
-reports/cilk.html:
-	./bin/criterion-external ./bin/spawnbench-cilk.exe --hpx-threads=1 -- -o reports/cilk.html -L 10
+$(out)/cilk.html:
+	CILK_NWORKERS=$(THREADS) ./bin/criterion-external ./bin/spawnbench-cilk.exe \
+          -- -o $@ --csv $(out)/cilk.csv -L 10
 
+$(out)/monad-par.html:
+	./bin/forkbench-monad-par -o $@ --csv $(out)/monad-par.csv +RTS -N$(THREADS)
 
+$(out)/io-threads.html:
+	./bin/forkbench-io-threads.exe -o $@ --csv $(out)/io-threads.csv +RTS -N$(THREADS)
 
-reports/rust-rayon.html:
-	./bin/criterion-external NUM_THREADS=1 ./bin/spawnbench-rust-rayon -- -o $@ --csv reports/rust-rayon.csv -L 10
+$(out)/ghc-sparks.html:
+	./bin/forkbench-ghc-sparks -o $@ --csv $(out)/ghc-sparks.csv +RTS -N$(THREADS)
+
+$(out)/cloud-haskell.html:
+	./bin/forkbench-cloud-haskell -o $@ --csv $(out)/cloud-haskell.csv -L 10 +RTS -N$(THREADS)
+
+rust: $(out)/rust-rayon.html
+$(out)/rust-rayon.html:
+	./bin/criterion-external NUM_THREADS=1 ./bin/spawnbench-rust-rayon -- -o $@ --csv $(out)/rust-rayon.csv -L 10
