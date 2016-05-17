@@ -6,7 +6,7 @@ source $stdenv/setup
 
 mkdir $out
 
-FILE=hpx-spawnbench
+FILE=spawnbench-hpx
 EXE=$FILE".exe"
 
 INCLUDES=" -I$hpx/include -I$hpx/lib/libffi-3.99999/include/ "

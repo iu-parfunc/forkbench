@@ -6,7 +6,7 @@
 
 stdenv.mkDerivation {
   name = "hpx-forkbench-0.0.1"; 
-  builder = ./runbench.sh; 
+  builder = ./builder.sh; 
   src = ./. ;
   inherit hpx;
   inherit hwloc;

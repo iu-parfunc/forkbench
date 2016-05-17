@@ -18,6 +18,7 @@ install:
 
 #----------------------------------------
 
+# Here we use the same NIX_PATH as hpx just to reduce install time:
 nix:
 	NIX_PATH=nixpkgs=https://github.com/iu-parfunc/nixpkgs/archive/hpx-3.0.0.tar.gz  nix-build
 	cp -f result/*.exe ../bin

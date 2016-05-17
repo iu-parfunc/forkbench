@@ -1,8 +1,7 @@
 
 .phony: all
 
-HTML= reports/cilk.html
-# reports/hpx.html
+HTML= reports/cilk.html reports/hpx.html
 
 # Building
 # ----------------------------------------
@@ -17,12 +16,17 @@ build:
 reports:
 	mkdir -p ./reports
 
+clean:
+	rm -f cilk/result hpx/result
+	rm -f bin/*
+#	rm -f $(HTML)
+
 # Running
 # ----------------------------------------
 
 # This one needs a long time
 reports/hpx.html:
-	./bin/criterion-external ./bin/hpx-spawnbench.exe --hpx-threads=1 -- -o reports/hpx.html -L 100
+	./bin/criterion-external ./bin/spawnbench-hpx.exe --hpx-threads=1 -- -o reports/hpx.html -L 100
 
 reports/cilk.html:
-	./bin/criterion-external ./bin/cilk-spawnbench.exe --hpx-threads=1 -- -o reports/hpx.html -L 100
+	./bin/criterion-external ./bin/spawnbench-cilk.exe --hpx-threads=1 -- -o reports/cilk.html -L 10
