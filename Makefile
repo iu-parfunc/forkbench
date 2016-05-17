@@ -30,3 +30,8 @@ reports/hpx.html:
 
 reports/cilk.html:
 	./bin/criterion-external ./bin/spawnbench-cilk.exe --hpx-threads=1 -- -o reports/cilk.html -L 10
+
+
+
+reports/rust-rayon.html:
+	./bin/criterion-external NUM_THREADS=1 ./bin/spawnbench-rust-rayon -- -o $@ --csv reports/rust-rayon.csv -L 10
