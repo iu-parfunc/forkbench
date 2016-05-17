@@ -27,21 +27,24 @@
 #include "hpx/hpx.h"
 
 static void _usage(FILE *f, int error) {
-  fprintf(f, "Usage: fibonacci [options] NUMBER\n"
+  fprintf(f, "Usage: spawnbench [options] NUMBER\n"
           "\t-h, show help\n");
   hpx_print_help();
   fflush(f);
   exit(error);
 }
 
-static hpx_action_t _fib      = 0;
-static hpx_action_t _fib_main = 0;
+static hpx_action_t _spawntree      = 0;
+static hpx_action_t _spawntree_main = 0;
 
-static int _fib_action(int *args, size_t size) {
+static int _spawntree_action(int *args, size_t size) {
   int n = *args;
 
-  if (n < 2) {
-    return HPX_THREAD_CONTINUE(n);
+  // printf("spawntree called on %d\n", n);
+  
+  if (n <= 0) {
+    int one = 1;
+    return HPX_THREAD_CONTINUE(one);
   }
 
   hpx_addr_t peers[] = {
@@ -50,8 +53,8 @@ static int _fib_action(int *args, size_t size) {
   };
 
   int ns[] = {
-    n - 1,
-    n - 2
+    (n / 2) - 1,
+    (n / 2) + (n % 2) - 1
   };
 
   hpx_addr_t futures[] = {
@@ -73,24 +76,26 @@ static int _fib_action(int *args, size_t size) {
     sizeof(int),
     sizeof(int)
   };
-
-  hpx_call(peers[0], _fib, futures[0], &ns[0], sizeof(int));
-  hpx_call(peers[1], _fib, futures[1], &ns[1], sizeof(int));
+  
+  hpx_call(peers[0], _spawntree, futures[0], &ns[0], sizeof(int));
+  hpx_call(peers[1], _spawntree, futures[1], &ns[1], sizeof(int));
   hpx_lco_get_all(2, futures, sizes, addrs, NULL);
   hpx_lco_delete(futures[0], HPX_NULL);
   hpx_lco_delete(futures[1], HPX_NULL);
 
+  // printf(" -> spawntree got returns: %d and %d\n", fns[0], fns[1]);
+  
   int fn = fns[0] + fns[1];
   return HPX_THREAD_CONTINUE(fn);
 }
 
-static int _fib_main_action(int *args, size_t size) {
+static int _spawntree_main_action(int *args, size_t size) {
   int n = *args;
-  int fn = 0;                                   // fib result
-  printf("fib(%d)=", n); fflush(stdout);
+  int fn = 0;                                   // spawntree result
+  printf("spawntree(%d)=", n); fflush(stdout);
   hpx_time_t now = hpx_time_now();
 
-  hpx_call_sync(HPX_HERE, _fib, &fn, sizeof(fn), &n, sizeof(n));
+  hpx_call_sync(HPX_HERE, _spawntree, &fn, sizeof(fn), &n, sizeof(n));
   double elapsed = hpx_time_elapsed_ms(now)/1e3;
 
   printf("%d\n", fn);
@@ -101,10 +106,10 @@ static int _fib_main_action(int *args, size_t size) {
 }
 
 int main(int argc, char *argv[]) {
-  // register the fib action
-  HPX_REGISTER_ACTION(HPX_DEFAULT, HPX_MARSHALLED, _fib, _fib_action,
+  // register the spawntree action
+  HPX_REGISTER_ACTION(HPX_DEFAULT, HPX_MARSHALLED, _spawntree, _spawntree_action,
                       HPX_POINTER, HPX_SIZE_T);
-  HPX_REGISTER_ACTION(HPX_DEFAULT, HPX_MARSHALLED, _fib_main, _fib_main_action,
+  HPX_REGISTER_ACTION(HPX_DEFAULT, HPX_MARSHALLED, _spawntree_main, _spawntree_main_action,
                       HPX_POINTER, HPX_SIZE_T);
 
   int e = hpx_init(&argc, &argv);
@@ -131,7 +136,7 @@ int main(int argc, char *argv[]) {
   int n = 0;
   switch (argc) {
    case 0:
-     fprintf(stderr, "\nMissing fib number.\n"); // fall through
+     fprintf(stderr, "\nMissing spawntree number.\n"); // fall through
    default:
      _usage(stderr, EXIT_FAILURE);
    case 1:
@@ -140,7 +145,7 @@ int main(int argc, char *argv[]) {
   }
 
   // run the main action
-  e = hpx_run(&_fib_main, &n, sizeof(n));
+  e = hpx_run(&_spawntree_main, &n, sizeof(n));
   hpx_finalize();
   return e;
 }
