@@ -66,4 +66,4 @@ $(out)/cloud-haskell.html:
 
 run-rust: $(out) $(out)/rust-rayon.html
 $(out)/rust-rayon.html: 
-	NUM_THREADS=1 ./bin/criterion-external ./bin/spawnbench-rust-rayon.exe -- -o $@ --csv $(out)/rust-rayon.csv -L 10
+	NUM_THREADS=$(THREADS) ./bin/criterion-external ./bin/spawnbench-rust-rayon.exe -- -o $@ --csv $(out)/rust-rayon.csv -L 10
