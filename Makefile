@@ -1,7 +1,7 @@
 
 .phony: all
 
-THREADS ?= 1
+THREADS ?= 01
 
 out = ./reports/$(THREADS)_thread/
 
@@ -11,7 +11,7 @@ HTML= $(out)/ghc-sparks.html $(out)/cloud-haskell.html \
 
 ALLBUILDS = build-haskell build-hpx build-cilk build-rust
 
-.phony: all build run-rust $(ALLBUILDS)
+.phony: all build run-rust run-hpx $(ALLBUILDS)
 
 # Building
 # ----------------------------------------
@@ -44,6 +44,7 @@ clean:
 # ----------------------------------------
 
 # This one needs a long time
+run-hpx: $(out) $(out)/hpx.html
 $(out)/hpx.html:
 	./bin/criterion-external ./bin/spawnbench-hpx.exe --hpx-threads=$(THREADS) \
           -- -o $@ --csv $(out)/hpx.csv -L 100
