@@ -7,11 +7,11 @@ out = ./reports/$(THREADS)_thread/
 
 HTML= $(out)/ghc-sparks.html $(out)/cloud-haskell.html \
       $(out)/io-threads.html $(out)/monad-par.html \
-      $(out)/cilk.html $(out)/hpx.html
+      $(out)/cilk.html $(out)/hpx.html $(out)/racket-futures.html
 
 ALLBUILDS = build-haskell build-hpx build-cilk build-rust
 
-.phony: all build run-rust run-hpx $(ALLBUILDS)
+.phony: all build rust hpx racket $(ALLBUILDS)
 
 # Building
 # ----------------------------------------
@@ -32,6 +32,9 @@ build-cilk:
 build-rust:
 	cd rust && make
 
+build-racket:
+	raco make racket/spawnbench.rkt
+
 $(out):
 	mkdir -p $(out)
 
@@ -44,7 +47,7 @@ clean:
 # ----------------------------------------
 
 # This one needs a long time
-run-hpx: $(out) $(out)/hpx.html
+hpx: $(out) $(out)/hpx.html
 $(out)/hpx.html:
 	./bin/criterion-external ./bin/spawnbench-hpx.exe --hpx-threads=$(THREADS) \
           -- -o $@ --csv $(out)/hpx.csv -L 100
@@ -65,6 +68,11 @@ $(out)/ghc-sparks.html:
 $(out)/cloud-haskell.html:
 	./bin/forkbench-cloud-haskell -o $@ --csv $(out)/cloud-haskell.csv -L 10 +RTS -N$(THREADS)
 
-run-rust: $(out) $(out)/rust-rayon.html
+rust: $(out) build-rust $(out)/rust-rayon.html
 $(out)/rust-rayon.html: 
 	NUM_THREADS=$(THREADS) ./bin/criterion-external ./bin/spawnbench-rust-rayon.exe -- -o $@ --csv $(out)/rust-rayon.csv -L 10
+
+racket: $(out) build-racket $(out)/racket-futures.html
+$(out)/racket-futures.html: 
+	./bin/criterion-external ./racket/spawnbench.rkt \
+          -- -o $@ --csv $(out)/racket-futures.csv -L 100
