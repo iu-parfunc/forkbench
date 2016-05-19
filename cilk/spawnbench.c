@@ -24,7 +24,7 @@ uint64 spawntree(uint64 n) {
 int main(int argc, char** argv) {
   uint64 n;
   if (argc>1)
-    n = atoi(argv[1]);
+    n = atoll(argv[1]);
   else {
     printf("spawnbench: expects one argument!\n");
     return 1;
