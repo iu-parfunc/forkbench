@@ -6,7 +6,9 @@
 
   <target name="compile">
     <mkdir dir="build/classes"/>
-    <javac srcdir="src" destdir="build/classes"/>
+    <javac srcdir="src" destdir="build/classes">
+      <compilerarg line="-J-server -J-XX:+AggressiveOpts -J-XX:+TieredCompilation" />
+    </javac>
   </target>
 
 
