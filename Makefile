@@ -35,6 +35,9 @@ build-rust:
 build-racket:
 	raco make racket/spawnbench.rkt
 
+build-manticore:
+	cd manticore && make
+
 $(out):
 	mkdir -p $(out)
 
@@ -76,3 +79,10 @@ racket: $(out) build-racket $(out)/racket-futures.html
 $(out)/racket-futures.html: 
 	./bin/criterion-external ./racket/spawnbench.rkt \
           -- -o $@ --csv $(out)/racket-futures.csv -L 100
+
+
+manticore: $(out) build-manticore $(out)/manticore.html
+run-manticore: $(out) $(out)/manticore.html
+$(out)/manticore.html: 
+	./bin/criterion-external ./bin/spawnbench-manticore.exe -p $(THREADS) \
+          -- -o $@ --csv $(out)/manticore.csv -L 10
