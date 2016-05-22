@@ -38,6 +38,9 @@ build-racket:
 build-manticore:
 	cd manticore && make
 
+build-java-forkjoin:
+	cd java-forkjoin && make
+
 $(out):
 	mkdir -p $(out)
 
@@ -85,4 +88,17 @@ manticore: $(out) build-manticore $(out)/manticore.html
 run-manticore: $(out) $(out)/manticore.html
 $(out)/manticore.html: 
 	./bin/criterion-external ./bin/spawnbench-manticore.exe -p $(THREADS) \
-          -- -o $@ --csv $(out)/manticore.csv -L 10
+          -- -o $@ --csv $(out)/manticore.csv -L 10;
+#	if [ "$(THREADS)" == "02" ]; then \
+         echo "Manticore fails at 2 threads"; \
+        else ./bin/criterion-external ./bin/spawnbench-manticore.exe -p $(THREADS) \
+          -- -o $@ --csv $(out)/manticore.csv -L 10; \
+        fi
+
+# FIXME: Should really use a regression methodology where we 
+java-forkjoin: $(out) build-java-forkjoin $(out)/java-forkjoin.html
+run-java-forkjoin: $(out) $(out)/java-forkjoin.html
+$(out)/java-forkjoin.html: 
+	NUM_THREADS=$(THREADS) ./bin/criterion-external "java -jar ./bin/ForkBench.jar" \
+          -- -o $@ --csv $(out)/java-forkjoin.csv -L 100;
+
