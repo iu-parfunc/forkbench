@@ -99,6 +99,6 @@ $(out)/manticore.html:
 java-forkjoin: $(out) build-java-forkjoin $(out)/java-forkjoin.html
 run-java-forkjoin: $(out) $(out)/java-forkjoin.html
 $(out)/java-forkjoin.html: 
-	NUM_THREADS=$(THREADS) ./bin/criterion-external "java -jar ./bin/ForkBench.jar" \
+	NUM_THREADS=$(THREADS) ./bin/criterion-external "java -XX:-AggressiveOpts -XX:-TieredCompilation -jar ./bin/ForkBench.jar" \
           -- -o $@ --csv $(out)/java-forkjoin.csv -L 100;
 
