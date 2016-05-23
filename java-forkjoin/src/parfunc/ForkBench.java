@@ -10,7 +10,8 @@ public class ForkBench {
 	    int n = Integer.parseInt(args[0]);
 	    String readThreads = System.getenv("NUM_THREADS");
 	    int threads = Integer.parseInt(readThreads);
-	    Bencher.invoke(n, threads);
+	    long res = Bencher.invoke(n, threads);
+            System.err.println(res);
 	} catch (Exception e) {
 	    System.err.println("Invalid input.");
 	    System.exit(1);
@@ -18,35 +19,35 @@ public class ForkBench {
 	
     }
 
-    private static class Bencher extends RecursiveTask<Integer> {
-	private int steps;
+    private static class Bencher extends RecursiveTask<Long> {
+	private long steps;
 
-	public static int invoke(int n, int threads) {
+	public static long invoke(long n, int threads) {
 	    ForkJoinPool forkJoinPool = new ForkJoinPool(threads);
 	    Bencher b = new Bencher(n);
 	    return forkJoinPool.invoke(b);
 	}
 
-	private Bencher(int steps) {
+	private Bencher(long steps) {
 	    this.steps = steps;
 	}
 
-	private static int work(int steps) {
+	private static long work(long steps) {
 	    if (steps == 0) {
 		return 1;
 	    } else {
-		int half1 = steps / 2;
-		int half2 = half1 + (steps % 2);
+		long half1 = steps / 2;
+		long half2 = half1 + (steps % 2);
 		Bencher subtask = new Bencher(half2 - 1);
 		subtask.fork();
-		int a = work(half1);
-		int b = subtask.join();
+		long a = work(half1);
+		long b = subtask.join();
 		return a + b;
 	    }
 	}
 
 	@Override
-	protected Integer compute() {
+	protected Long compute() {
 	    return work(steps);
 	}
     }

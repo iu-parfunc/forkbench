@@ -95,9 +95,10 @@ $(out)/manticore.html:
           -- -o $@ --csv $(out)/manticore.csv -L 10; \
         fi
 
-# FIXME: Should really use a regression methodology where we 
 java-forkjoin: $(out) build-java-forkjoin $(out)/java-forkjoin.html
 run-java-forkjoin: $(out) $(out)/java-forkjoin.html
+
+# FIXME: Should really use a regression methodology where we start up the JVM once:
 $(out)/java-forkjoin.html: 
 	NUM_THREADS=$(THREADS) ./bin/criterion-external "java -XX:-AggressiveOpts -XX:-TieredCompilation -jar ./bin/ForkBench.jar" \
           -- -o $@ --csv $(out)/java-forkjoin.csv -L 100;
