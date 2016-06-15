@@ -4,13 +4,13 @@
  *)
 
 fun spawnbench (n: int) : int =
-  if n = 1
+  if n = 0
   then 1
-  else let val half = Int.quot (n,2)  
-           val half2 = half + Int.rem (n,2)
+  else let val half = n div 2
+           val half2 = half + n mod 2
            (* These two can be pval: *)
-           val x = spawnbench (half2-1)
-           val y = spawnbench half
+           pval x = spawnbench (half2-1)
+           pval y = spawnbench half
        in
           x+y
        end
@@ -24,4 +24,13 @@ val size =
    | NONE   => raise Match
 
 val res = spawnbench size
-val _ = print (Int.toString res)
+val _ = print (Int.toString res) 
+
+(*
+
+[2016.05.22] I was having some trouble with this:
+
+$ ../bin/spawnbench-manticore.exe 1000
+Spawnbench args: [1000]
+Segmentation fault (core dumped)
+*)
