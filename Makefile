@@ -108,7 +108,7 @@ $(out)/java-forkjoin.html:
 #-----------------------------------------
 
 docker: clean_checkout
-	docker build -t forkbench .
+	cd clean_checkout && docker build -t forkbench .
 
 clean_checkout:
 	git diff --exit-code
