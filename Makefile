@@ -11,7 +11,7 @@ HTML= $(out)/ghc-sparks.html $(out)/cloud-haskell.html \
 
 ALLBUILDS = build-haskell build-hpx build-cilk build-rust
 
-.phony: all build rust hpx racket $(ALLBUILDS)
+.phony: all build rust hpx racket $(ALLBUILDS) docker
 
 # Building
 # ----------------------------------------
@@ -102,4 +102,15 @@ run-java-forkjoin: $(out) $(out)/java-forkjoin.html
 $(out)/java-forkjoin.html: 
 	NUM_THREADS=$(THREADS) ./bin/criterion-external "java -XX:-AggressiveOpts -XX:-TieredCompilation -jar ./bin/ForkBench.jar" \
           -- -o $@ --csv $(out)/java-forkjoin.csv -L 100;
+
+
+# Docker
+#-----------------------------------------
+
+docker: clean_checkout
+	docker build -t forkbench .
+
+clean_checkout:
+	git diff --exit-code
+	git clone . ./clean_checkout/
 
