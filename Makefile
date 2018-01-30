@@ -112,4 +112,5 @@ docker: clean_checkout
 
 clean_checkout: $(shell git ls-files)
 	git diff --exit-code
-	git clone . ./clean_checkout/
+	rm -rf $@
+	git clone . $@
