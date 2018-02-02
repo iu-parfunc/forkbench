@@ -1,19 +1,50 @@
 
-resolver: lts-5.16
+resolver: lts-6.10
 
 packages: 
  - monad-par/
  - io-threads/ 
  - ghc-sparks/
  - cloud-haskell/
+ - lvish/
+ 
  - location:
      git: git@github.com:rrnewton/criterion-external.git
      commit: 0dac58c9b8c28137e3dc5f5a4b4bbe8f77d6c16e
- 
-local-bin-path: ./bin/
+#     extra-dep: true
 
-extra-deps: []
+ - location:
+     git: git@github.com:iu-parfunc/lvars.git
+     commit: aed07cb8969a1dcc117b97598a4310a4cd213bca
+   subdirs:
+      - src/lvish 
+      - src/par-classes
+      - src/par-collections
+      
+ - location:
+    git:  https://github.com/iu-parfunc/tslogger.git
+    commit: 339d18daf0c744455c222ab24fc34eb389dec63e
+ - location:
+    git: https://github.com/rrnewton/concurrent-skiplist.git
+    commit: 097e89e1ce56b9e7e20d2f6eb67ffb528ac3a4b8
+ - location:
+    git: https://github.com/iu-parfunc/ctrie.git
+    commit: 0ee9b4cd28cf2dae43eec22d39397d61526dbff1
+
+local-bin-path: ./bin/
 
 flags: {}
 
 extra-package-dbs: []
+    
+extra-deps: 
+# Soon:  
+# For lvish: 
+# - tslogger-0.1.0.1
+- chaselev-deque-0.5.0.5
+- pcg-random-0.1.3.4
+- thread-local-storage-0.1.0.4
+- tslogger-0.1.0.0
+- atomic-primops-0.8.0.3
+- bits-atomic-0.1.3
+
