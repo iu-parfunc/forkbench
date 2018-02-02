@@ -11,15 +11,16 @@ HTML= $(out)/ghc-sparks.html $(out)/cloud-haskell.html \
 
 ALLBUILDS = build-haskell build-hpx build-cilk build-rust
 
-.phony: all build rust hpx racket $(ALLBUILDS) docker run-docker
+.phony: all build rust hpx racket $(ALLBUILDS) docker run-docker docker-here docker-clean
 
-# Building
+# Building each benchmark into ./bin/
 # ----------------------------------------
 
 all: $(out) build $(HTML)
 
 build: $(ALLBUILDS)
 
+# Build ALL the Haskell-based implementations of this benchmark:
 build-haskell:
 	stack --system-ghc install
 
@@ -49,8 +50,14 @@ clean:
 	rm -f bin/*
 #	rm -f $(HTML)
 
+
 # Running
 # ----------------------------------------
+
+# Note: currently this dumps the criterion output for each benchmark.
+# This should be improved to also gather/summarize the results.
+# For example, HSBencher can import these criterion files to produce a summary.
+
 
 # This one needs a long time
 hpx: $(out) $(out)/hpx.html
@@ -107,8 +114,22 @@ $(out)/java-forkjoin.html:
 # Docker
 #-----------------------------------------
 
-docker: clean_checkout
+# This option does the Docker build "out of place" to avoid an
+# excessively large copy from the working space.
+docker-clean: clean_checkout .docker_base_image_verified.token
 	cd clean_checkout && docker build -t forkbench .
+
+docker: docker-here
+docker-here: .docker_base_image_verified.token
+	docker build -t forkbench .
+
+# Hacky, but what can you do with Docker?
+BASEIMG=$(shell head -n1 Dockerfile  | awk '{ print $$2 }')
+
+.docker_base_image_verified.token:
+	docker run ${BASEIMG} || (cd compile-o-rama && make docker2)
+	docker run ${BASEIMG}
+	touch $@
 
 run-docker:
 	docker run -it forkbench 
