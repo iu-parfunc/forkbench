@@ -21,7 +21,7 @@ all: $(out) build $(HTML)
 build: $(ALLBUILDS)
 
 build-haskell:
-	stack install
+	stack --system-ghc install
 
 build-hpx:
 	(cd hpx && make)
