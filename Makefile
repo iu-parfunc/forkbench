@@ -11,7 +11,7 @@ HTML= $(out)/ghc-sparks.html $(out)/cloud-haskell.html \
 
 ALLBUILDS = build-haskell build-hpx build-cilk build-rust
 
-.phony: all build rust hpx racket $(ALLBUILDS) docker
+.phony: all build rust hpx racket $(ALLBUILDS) docker run-docker
 
 # Building
 # ----------------------------------------
@@ -109,6 +109,9 @@ $(out)/java-forkjoin.html:
 
 docker: clean_checkout
 	cd clean_checkout && docker build -t forkbench .
+
+run-docker:
+	docker run -it forkbench 
 
 clean_checkout: $(shell git ls-files)
 	git diff --exit-code
