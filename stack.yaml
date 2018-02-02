@@ -1,5 +1,5 @@
 
-resolver: lts-8.6
+resolver: lts-9.14
 
 packages: 
  - monad-par/
