@@ -6,8 +6,8 @@
 typedef unsigned long long uint64;
 
 // This must execute EXACTLY n forks.
-void forktree(uint64 n) {
-  // printf("Forktree of %d\n", n);
+void forktree(uint64 n)
+{
   if (n==0) return;
 
   // First we split without losing any:
@@ -16,7 +16,6 @@ void forktree(uint64 n) {
   
   cilk_spawn forktree(half2 - 1);
   forktree(half1);
-  // cilk_sync; return;
 }
 
 int main(int argc, char** argv) {
