@@ -24,9 +24,6 @@ build: $(ALLBUILDS)
 build-haskell:
 	stack --system-ghc install
 
-build-hpx:
-	(cd hpx && make)
-
 build-cilk:
 	(cd cilk && make nix)
 
@@ -51,12 +48,23 @@ clean:
 #	rm -f $(HTML)
 
 
+# Distributed systems (but running shared-memory):
+#-------------------------------------------------
+
+build-hpx:
+	(cd hpx && make)
+
+build-chapel:
+	(cd chapel && make)
+
 # Running
 # ----------------------------------------
 
 # Note: currently this dumps the criterion output for each benchmark.
 # This should be improved to also gather/summarize the results.
 # For example, HSBencher can import these criterion files to produce a summary.
+
+chapel: $(out) $(out)/chapel.html
 
 
 # This one needs a long time
