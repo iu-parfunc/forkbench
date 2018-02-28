@@ -1,3 +1,9 @@
+# HOWTO:
+# 
+# This Makefile contains a set of different actions to build and then
+# run specific implementations of the benchmark (build-X, X).
+# It also contains some commands for using Docker.
+
 
 .phony: all
 
@@ -77,6 +83,7 @@ $(out)/cilk.html:
 	CILK_NWORKERS=$(THREADS) ./bin/criterion-external ./bin/spawnbench-cilk.exe \
           -- -o $@ --csv $(out)/cilk.csv -L 10
 
+# These don't use criterion-external because they link the criterion library into the executables:
 $(out)/monad-par.html:
 	./bin/forkbench-monad-par -o $@ --csv $(out)/monad-par.csv +RTS -N$(THREADS)
 
@@ -142,6 +149,7 @@ BASEIMG=$(shell head -n1 Dockerfile  | awk '{ print $$2 }')
 run-docker:
 	docker run -it forkbench 
 
+# Create a clean copy of the working directory within a subdirectory.
 clean_checkout: $(shell git ls-files)
 	git diff --exit-code
 	rm -rf $@

@@ -10,7 +10,8 @@ packages:
 #     git: git@github.com:rrnewton/criterion-external.git
      git: https://github.com/rrnewton/criterion-external
      commit: 0dac58c9b8c28137e3dc5f5a4b4bbe8f77d6c16e
- 
+   extra-dep: true
+     
 local-bin-path: ./bin/
 
 extra-deps:

@@ -5,3 +5,4 @@ result
 bin
 .DS_Store
 clean_checkout
+.docker_base_image_verified.token
