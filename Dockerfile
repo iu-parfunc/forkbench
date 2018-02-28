@@ -1,4 +1,4 @@
-FROM dist-compile-o-rama:0.1
+FROM compile-o-rama:0.2
 
 # Go ahead and prefetch/build dependencies BEFORE adding the bulk of
 # the files to the container:
