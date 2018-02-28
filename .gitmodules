@@ -1,3 +1,4 @@
 [submodule "compile-o-rama"]
 	path = compile-o-rama
-	url = git@github.com:iu-parfunc/compile-o-rama
+	url = http://github.com/iu-parfunc/compile-o-rama
+#	url = git@github.com:iu-parfunc/compile-o-rama
