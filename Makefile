@@ -17,12 +17,14 @@ HTML= $(out)/ghc-sparks.html $(out)/cloud-haskell.html \
 
 ALLBUILDS = build-haskell build-hpx build-cilk build-rust
 
-.phony: all build rust hpx racket $(ALLBUILDS) docker run-docker docker-here docker-clean
+.phony: all build run-all rust hpx racket $(ALLBUILDS) docker run-docker docker-here docker-clean
 
 # Building each benchmark into ./bin/
 # ----------------------------------------
 
-all: $(out) build $(HTML)
+all: $(out) build run-all
+
+run-all: $(HTML)
 
 build: $(ALLBUILDS)
 
@@ -121,6 +123,7 @@ java-forkjoin: $(out) build-java-forkjoin $(out)/java-forkjoin.html
 run-java-forkjoin: $(out) $(out)/java-forkjoin.html
 
 # FIXME: Should really use a regression methodology where we start up the JVM once:
+# For now we just run for a really long time.  This gets to ~100M spawns on 1 thread:
 $(out)/java-forkjoin.html: 
 	NUM_THREADS=$(THREADS) ./bin/criterion-external "java -XX:-AggressiveOpts -XX:-TieredCompilation -jar ./bin/ForkBench.jar" \
           -- -o $@ --csv $(out)/java-forkjoin.csv -L 100;
