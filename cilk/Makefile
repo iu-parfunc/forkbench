@@ -3,7 +3,7 @@
 
 out ?= ./build
 
-CC=gcc
+CC=gcc -g -O3
 
 all: spawnbench forkbench emptydag
 	$(CC) --version
