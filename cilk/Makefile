@@ -1,9 +1,11 @@
 
 # On Cutter do "module add gcc" to get a new version of GCC.
 
+out ?= ./build
+
 CC=gcc
 
-all: $(out)/spawnbench-cilk.exe $(out)/forkbench-cilk.exe
+all: spawnbench forkbench emptydag
 	$(CC) --version
 
 $(out)/spawnbench-cilk.exe: spawnbench.c
@@ -13,6 +15,17 @@ $(out)/spawnbench-cilk.exe: spawnbench.c
 $(out)/forkbench-cilk.exe: forkbench.c
 	mkdir -p $(out)
 	$(CC) -fcilkplus $^ -o $@
+
+$(out)/empty-DAG.exe: emptydag.c
+	mkdir -p $(out)
+	$(CC) -fcilkplus $^ -o $@
+
+# Convenience:
+spawnbench: $(out)/spawnbench-cilk.exe
+forkbench:  $(out)/forkbench-cilk.exe
+emptydag:   $(out)/empty-DAG.exe
+
+.PHONY: install all nix emptydag forkbench spawnbench
 
 install:
 
