@@ -12,19 +12,6 @@
 
 using cycles_type = uint64_t;
 
-static constexpr
-size_t nb_bins = 100;
-
-static constexpr
-size_t bin_sz = (1<<10);
-
-static constexpr
-int duration_sec = 2;
-
-size_t histogram[nb_bins];
-
-bool* global_flag;
-
 static inline
 cycles_type rdtsc() {
   unsigned int hi, lo;
@@ -33,6 +20,14 @@ cycles_type rdtsc() {
 }
 
 int main() {
+  static constexpr
+  size_t nb_bins = 100;
+  static constexpr
+  size_t bin_sz = (1<<10);
+  static constexpr
+  int duration_sec = 2;
+  size_t histogram[nb_bins];
+  bool* global_flag;
   bool flag = false;
   std::vector<cycles_type> large_diffs;
   auto record_diff = [&] (cycles_type diff) {
