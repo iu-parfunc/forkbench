@@ -1,0 +1,24 @@
+mainmodule spawnbench {
+  mainchare Main {
+    entry Main(CkArgMsg* m);
+  };
+
+  chare Spawntree {
+    entry Spawntree(int n, bool isRoot, CProxy_Spawntree parent);
+    entry void calc(int n) {
+      if (n == 0) serial { respond(0); }
+      else {
+        serial {
+          int half1 = n / 2;
+          int half2 = half1 + (n % 2);
+          CProxy_Spawntree::ckNew(half1, false, thisProxy);
+          CProxy_Spawntree::ckNew(half2 - 1, false, thisProxy);
+        }
+        when response(int val)
+          when response(int val2)
+            serial { respond(val + val2); }
+      }
+    };
+    entry void response(int val);
+  };
+};
