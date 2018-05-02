@@ -33,7 +33,7 @@ build-haskell:
 	stack --system-ghc install
 
 build-cilk:
-	(cd cilk && make nix)
+	cd cilk && make
 
 build-rust:
 	cd rust && make
