@@ -1,5 +1,5 @@
 
-CHARMC = /charm/bin/charmc $(OPTS)
+CHARMC = /usr/local/charm/bin/charmc $(OPTS)
 
 OBJS = spawnbench.o
 
