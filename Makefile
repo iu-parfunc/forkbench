@@ -15,7 +15,7 @@ HTML= $(out)/ghc-sparks.html $(out)/cloud-haskell.html \
       $(out)/io-threads.html $(out)/monad-par.html \
       $(out)/cilk.html $(out)/hpx.html $(out)/racket-futures.html
 
-ALLBUILDS = build-haskell build-hpx build-cilk build-rust
+ALLBUILDS = build-haskell build-cilk build-rust
 
 .phony: all build run-all rust hpx racket $(ALLBUILDS) docker run-docker docker-here docker-clean
 
