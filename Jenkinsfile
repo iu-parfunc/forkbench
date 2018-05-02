@@ -5,7 +5,7 @@ pipeline {
     stages {
         stage('Test') {
             steps {
-		sh 'make'
+		sh './jenkins_worker.sh'
             }
         }
     }
