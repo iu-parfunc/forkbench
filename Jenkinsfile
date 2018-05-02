@@ -5,7 +5,8 @@ pipeline {
     stages {
         stage('Test') {
             steps {
-                sh 'gcc --version'
+                sh 'cd charm'
+		sh 'make'
             }
         }
     }
