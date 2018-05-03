@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-cd /forkbench
+cd /forkbench &&
 make
 
 
