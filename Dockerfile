@@ -3,7 +3,8 @@ FROM parfunc/compile-o-rama:0.2.2
 # Go ahead and prefetch/build dependencies BEFORE adding the bulk of
 # the files to the container:
 # ------------------------------------------------------------------
-ADD Makefile stack.yaml /forkbench/
+ADD stack.yaml /forkbench/
+ADD Makefile /forkbench/
 WORKDIR /forkbench/
 RUN stack --system-ghc setup 
 # RUN mkdir /forkbench/cloud-haskell /forkbench/io-threads /forkbench/ghc-sparks /forkbench/monad-par 
