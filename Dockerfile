@@ -1,4 +1,4 @@
-FROM parfunc/compile-o-rama:0.2.1
+FROM parfunc/compile-o-rama:0.2.2
 
 # Go ahead and prefetch/build dependencies BEFORE adding the bulk of
 # the files to the container:
