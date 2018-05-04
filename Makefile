@@ -13,7 +13,8 @@ out = ./reports/$(THREADS)_thread/
 
 HTML= $(out)/ghc-sparks.html $(out)/cloud-haskell.html \
       $(out)/io-threads.html $(out)/monad-par.html \
-      $(out)/cilk.html $(out)/hpx.html $(out)/racket-futures.html
+      $(out)/cilk.html $(out)/hpx.html $(out)/racket-futures.html \
+      $(out)/charm-chare.html
 
 ALLBUILDS = build-haskell build-cilk build-charm build-rust
 
@@ -109,6 +110,12 @@ racket: $(out) build-racket $(out)/racket-futures.html
 $(out)/racket-futures.html: 
 	./bin/criterion-external ./racket/spawnbench.rkt \
           -- -o $@ --csv $(out)/racket-futures.csv -L 100
+
+charm: $(out) build-charm $(out)/charm-chare.html
+$(out)/charm-chare.html:
+	./bin/criterion-external ./bin/spawnbench-charm-chare.exe \
+	    $(THREADS) +p$(THREADS) +setcpuaffinity \
+	    -- -o $@ --csv $(out)/charm-chare.csv -L 100
 
 
 manticore: $(out) build-manticore $(out)/manticore.html
