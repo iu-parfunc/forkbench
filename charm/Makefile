@@ -3,7 +3,7 @@ CHARMC = /usr/local/charm/bin/charmc $(OPTS)
 
 OBJS = spawnbench.o
 
-all: spawnbench
+all: spawnbench install
 
 spawnbench: $(OBJS)
 	$(CHARMC) -language charm++ -o spawnbench $(OBJS)
@@ -16,3 +16,6 @@ clean:
 
 spawnbench.o: spawnbench.C spawnbench.decl.h
 	$(CHARMC) -c spawnbench.C
+	
+install:
+	cp -a spawnbench ../bin/spawnbench-charm-chare.exe
