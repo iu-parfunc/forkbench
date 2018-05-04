@@ -28,9 +28,10 @@ fn main() {
             _ => panic!("Environment variable NUM_THREADS not set.")
         };
     { // Initialize the threadpool (optional):
-        let conf = rayon::Configuration::new().set_num_threads(threads);
-        println!("Running with threads = {:?}", conf.num_threads());
-        initialize(conf).unwrap();
+        //let conf = rayon::Configuration::new().set_num_threads(threads);
+        rayon::ThreadPoolBuilder::new().num_threads(threads).build_global().unwrap();
+        println!("Running with threads = {:?}", current_num_threads());
+        //initialize(conf).unwrap();
     }
     
     match env::args().last() {
