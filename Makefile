@@ -14,9 +14,9 @@ out = ./reports/$(THREADS)_thread/
 HTML= $(out)/ghc-sparks.html $(out)/cloud-haskell.html \
       $(out)/io-threads.html $(out)/monad-par.html \
       $(out)/cilk.html $(out)/hpx.html $(out)/racket-futures.html \
-      $(out)/charm-chare.html
+      $(out)/charm-chare.html $(out)/chapel.html
 
-ALLBUILDS = build-haskell build-cilk build-charm build-rust
+ALLBUILDS = build-haskell build-cilk build-charm build-rust build-chapel
 
 .phony: all build run-all rust hpx racket $(ALLBUILDS) docker run-docker docker-here docker-clean
 
@@ -41,6 +41,9 @@ build-charm:
 
 build-rust:
 	cd rust && make
+
+build-chapel:
+	cd chapel && make
 
 build-racket:
 	raco make racket/spawnbench.rkt
@@ -116,6 +119,11 @@ $(out)/charm-chare.html:
 	./bin/criterion-external ./bin/spawnbench-charm-chare.exe \
 	    $(THREADS) +p$(THREADS) +setcpuaffinity \
 	    -- -o $@ --csv $(out)/charm-chare.csv -L 100
+
+chapel: $(out) build-chapel $(out)/chapel.html
+$(out)/chapel.html:
+	./bin/criterion-external ./bin/spawnbench-chapel.exe \
+	    --n=$(THREADS) -- -o $@ --csv $(out)/chapel.csv -L 100
 
 
 manticore: $(out) build-manticore $(out)/manticore.html
