@@ -36,14 +36,8 @@ build-haskell:
 build-cilk:
 	cd cilk && make
 
-build-charm:
-	cd charm && make
-
 build-rust:
 	cd rust && make
-
-build-chapel:
-	cd chapel && make
 
 build-racket:
 	raco make racket/spawnbench.rkt
@@ -72,6 +66,8 @@ clean:
 build-chapel:
 	(cd chapel && make)
 
+build-charm:
+	(cd charm && make)
 # Running
 # ----------------------------------------
 
