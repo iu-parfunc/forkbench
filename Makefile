@@ -13,12 +13,12 @@ out = ./reports/$(THREADS)_thread/
 
 HTML= $(out)/ghc-sparks.html $(out)/cloud-haskell.html \
       $(out)/io-threads.html $(out)/monad-par.html \
-      $(out)/cilk.html $(out)/hpx.html $(out)/racket-futures.html \
+      $(out)/cilk.html $(out)/racket-futures.html \
       $(out)/charm-chare.html $(out)/chapel.html
 
 ALLBUILDS = build-haskell build-cilk build-charm build-rust build-chapel
 
-.phony: all build run-all rust hpx racket $(ALLBUILDS) docker run-docker docker-here docker-clean
+.phony: all build run-all rust racket $(ALLBUILDS) docker run-docker docker-here docker-clean
 
 # Building each benchmark into ./bin/
 # ----------------------------------------
@@ -66,8 +66,8 @@ clean:
 # Distributed systems (but running shared-memory):
 #-------------------------------------------------
 
-build-hpx:
-	(cd hpx && make)
+#build-hpx:
+#	(cd hpx && make)
 
 build-chapel:
 	(cd chapel && make)
@@ -83,10 +83,10 @@ chapel: $(out) $(out)/chapel.html
 
 
 # This one needs a long time
-hpx: $(out) $(out)/hpx.html
-$(out)/hpx.html:
-	./bin/criterion-external ./bin/spawnbench-hpx.exe --hpx-threads=$(THREADS) \
-          -- -o $@ --csv $(out)/hpx.csv -L 100
+#hpx: $(out) $(out)/hpx.html
+#$(out)/hpx.html:
+#	./bin/criterion-external ./bin/spawnbench-hpx.exe --hpx-threads=$(THREADS) \
+#          -- -o $@ --csv $(out)/hpx.csv -L 100
 
 $(out)/cilk.html:
 	CILK_NWORKERS=$(THREADS) ./bin/criterion-external ./bin/spawnbench-cilk.exe \
