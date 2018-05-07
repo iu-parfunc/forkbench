@@ -121,8 +121,8 @@ $(out)/charm-chare.html:
 
 chapel: $(out) build-chapel $(out)/chapel.html
 $(out)/chapel.html:
-	CHPL_RT_NUM_THREADS_PER_LOCALE=$(THREADS) ./bin/criterion-external ./bin/spawnbench-chapel.exe \
-	    --n -- -o $@ --csv $(out)/chapel.csv -L 100
+	CHPL_RT_NUM_THREADS_PER_LOCALE=$(THREADS) ./bin/criterion-external "./bin/spawnbench-chapel.exe --n" \
+	    -- -o $@ --csv $(out)/chapel.csv -L 100
 
 
 manticore: $(out) build-manticore $(out)/manticore.html
