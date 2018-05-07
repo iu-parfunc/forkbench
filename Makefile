@@ -79,7 +79,6 @@ build-chapel:
 # This should be improved to also gather/summarize the results.
 # For example, HSBencher can import these criterion files to produce a summary.
 
-chapel: $(out) $(out)/chapel.html
 
 
 # This one needs a long time
@@ -122,8 +121,8 @@ $(out)/charm-chare.html:
 
 chapel: $(out) build-chapel $(out)/chapel.html
 $(out)/chapel.html:
-	./bin/criterion-external ./bin/spawnbench-chapel.exe \
-	    --n=$(THREADS) -- -o $@ --csv $(out)/chapel.csv -L 100
+	CHPL_RT_NUM_THREADS_PER_LOCALE=$(THREADS) ./bin/criterion-external ./bin/spawnbench-chapel.exe \
+	    --n -- -o $@ --csv $(out)/chapel.csv -L 100
 
 
 manticore: $(out) build-manticore $(out)/manticore.html
