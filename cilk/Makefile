@@ -5,7 +5,7 @@ out ?= ./build
 
 CC=gcc -g -O3
 
-all: spawnbench forkbench emptydag
+all: spawnbench forkbench emptydag install
 	$(CC) --version
 
 $(out)/spawnbench-cilk.exe: spawnbench.c
