@@ -28,6 +28,7 @@ emptydag:   $(out)/empty-DAG.exe
 .PHONY: install all nix emptydag forkbench spawnbench
 
 install:
+	cp -f $(out)/*.exe ../bin
 
 #----------------------------------------
 
