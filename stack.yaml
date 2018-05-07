@@ -8,9 +8,9 @@ packages:
  - cloud-haskell/
  - location:
 #     git: git@github.com:rrnewton/criterion-external.git
-     git: https://github.com/rrnewton/criterion-external
+     git: https://github.com/rrnewton/criterion-external.git
      commit: 0dac58c9b8c28137e3dc5f5a4b4bbe8f77d6c16e
-   extra-dep: true
+   extra-dep: false
      
 local-bin-path: ./bin/
 
