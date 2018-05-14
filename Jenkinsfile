@@ -3,9 +3,17 @@ pipeline {
         dockerfile true
     }
     stages {
+        stage('Build') {
+            steps {
+		sh 'make build'
+                archiveArtifacts artifacts: 'bin/*', fingerprint: true
+            }
+        }
+    }
+    stages {
         stage('Test') {
             steps {
-		sh './jenkins_worker.sh'
+                sh 'make run-all'
             }
         }
     }
