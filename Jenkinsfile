@@ -9,8 +9,6 @@ pipeline {
                 archiveArtifacts artifacts: 'bin/*', fingerprint: true
             }
         }
-    }
-    stages {
         stage('Test') {
             steps {
                 sh 'make run-all'
