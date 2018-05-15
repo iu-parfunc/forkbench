@@ -16,6 +16,7 @@ for(int i=0; i< axisBench.size(); i++) {
 }
 */
 
+node("cutter01") {
 pipeline {
     agent {
         // A node RN & IW manually installed Docker on:
@@ -57,4 +58,5 @@ pipeline {
             }
         }        
     }
+}
 }
