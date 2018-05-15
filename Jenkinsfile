@@ -22,10 +22,14 @@ pipeline {
         stage ("parallel") {
             parallel {
                 stage("cilk") {
-                    echo "Do cilk"
+                    steps {
+                        echo "Do cilk"
+                    }
                 }
                 stage("rust") {
-                    echo "Do rust"
+                    steps {                        
+                        echo "Do rust"
+                    }
                 }
             }
         }
