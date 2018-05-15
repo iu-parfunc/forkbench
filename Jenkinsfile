@@ -13,9 +13,16 @@ for(int i=0; i< axisBench.size(); i++) {
         }
 }
 
-stage("Matrix") {
-    parallel tasks
+pipeline {
+    agent {
+        // A node RN & IW manually installed Docker on:
+        dockerfile true
+    }
+    stage("Matrix") {
+        parallel tasks
+    }
 }
+
 
 /*
 pipeline {
