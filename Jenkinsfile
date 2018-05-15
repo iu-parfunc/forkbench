@@ -30,7 +30,9 @@ pipeline {
 //         }
         
         stage("Matrix") {
-          parallel tasks
+            steps {
+                parallel tasks
+            }
         }
 
 //         stage('After') {
