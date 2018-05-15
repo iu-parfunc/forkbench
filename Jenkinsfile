@@ -29,9 +29,9 @@ pipeline {
             }
         }
         
-        stage("Matrix") {
-            parallel tasks
-        }        
+//        stage("Matrix") {
+        parallel tasks
+//        }        
         stage('After') {
             steps {
 //                sh 'make run-all'
