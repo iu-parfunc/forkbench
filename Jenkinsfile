@@ -7,13 +7,14 @@ pipeline {
             steps {
                 sh 'pwd'
                 sh 'cat /etc/issue'
-		            sh 'make build'
+//              sh 'make build'
                 archiveArtifacts artifacts: 'bin/*', fingerprint: true
             }
         }
         stage('Test') {
             steps {
-                sh 'make run-all'
+//                sh 'make run-all'
+                sh 'echo DO TEST'
             }
         }
     }
