@@ -16,6 +16,23 @@ for(int i=0; i< axisBench.size(); i++) {
 }
 */
 
+
+def jobs = ["JobA", "JobB", "JobC"]
+
+def parallelStagesMap = jobs.collectEntries {
+    ["${it}" : generateStage(it)]
+}
+
+def generateStage(job) {
+    return {
+        stage("stage: ${job}") {
+                echo "This is ${job}."
+                sh script: "sleep 15"
+        }
+    }
+}
+
+
 pipeline {
     agent {
         // A node RN & IW manually installed Docker on:
@@ -38,6 +55,12 @@ pipeline {
         }        
         
         stage ("parallel") {
+            steps {
+                script {
+                    parallel parallelStagesMap
+                }
+            }
+/*            
             parallel {
                 stage("cilk") {
                     steps {                        
@@ -50,6 +73,7 @@ pipeline {
                     }
                 }
             }
+*/
         }
         // stage("Matrix") {
         //     parallel tasks
