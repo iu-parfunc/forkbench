@@ -31,7 +31,7 @@ build: $(ALLBUILDS)
 
 # Build ALL the Haskell-based implementations of this benchmark:
 build-haskell:
-	stack --stack-root ./.stack --system-ghc install
+	stack --system-ghc install
 
 build-cilk:
 	cd cilk && make
