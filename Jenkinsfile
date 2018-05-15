@@ -2,9 +2,10 @@ def axisBench = ["cilk","rust"] // etc...
 def tasks = [:]
 
 pipeline {
+    // label 'cutter01'
+    
     agent {
         // A node RN & IW manually installed Docker on:
-        label 'cutter01'
         dockerfile true
     }
     stages {
