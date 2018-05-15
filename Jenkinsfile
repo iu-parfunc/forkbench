@@ -12,6 +12,11 @@ for(int i=0; i< axisBench.size(); i++) {
         }
 }
 
+stage("Matrix") {
+    parallel tasks
+}
+
+/*
 pipeline {
     // label 'cutter01'
     
@@ -43,3 +48,4 @@ pipeline {
 //         }
     }
 }
+*/
