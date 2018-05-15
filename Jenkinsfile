@@ -16,12 +16,16 @@ for(int i=0; i< axisBench.size(); i++) {
 }
 */
 
-node("cutter01") {
 pipeline {
     agent {
         // A node RN & IW manually installed Docker on:
-        dockerfile true
-    }    
+        dockerfile /* true */ {
+            // filename 'Dockerfile.build'
+            // dir 'build'
+            label 'cutter01'
+            // additionalBuildArgs  '--build-arg version=1.0.2'
+        }
+    }
     stages {
         
         stage('Build') {
@@ -59,4 +63,4 @@ pipeline {
         }        
     }
 }
-}
+
