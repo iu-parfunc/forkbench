@@ -5,7 +5,9 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-		sh 'make build'
+                sh 'pwd'
+                sh 'cat /etc/issue'
+		            sh 'make build'
                 archiveArtifacts artifacts: 'bin/*', fingerprint: true
             }
         }
