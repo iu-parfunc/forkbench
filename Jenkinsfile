@@ -3,6 +3,8 @@ def tasks = [:]
 
 pipeline {
     agent {
+        // A node RN & IW manually installed Docker on:
+        label 'cutter-raw1'
         dockerfile true
     }
     stages {
