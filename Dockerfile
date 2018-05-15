@@ -18,8 +18,8 @@ RUN stack --system-ghc build --only-dependencies
 # # See clean_checkout in the Makefile for how to make sure this isn't too much data:
 ADD . /forkbench
 
-RUN chown root /forkbench
-USER root
+RUN chown newuser /forkbench
+USER newuser
 WORKDIR /forkbench
 
 # RUN make build-haskell
