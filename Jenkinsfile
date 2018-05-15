@@ -18,8 +18,10 @@ pipeline {
         // A node RN & IW manually installed Docker on:
         dockerfile true
     }
-    stage("Matrix") {
-        parallel tasks
+    stages {
+        stage("Matrix") {
+            parallel tasks
+        }
     }
 }
 
