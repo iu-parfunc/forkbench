@@ -6,7 +6,8 @@ for(int i=0; i< axisBench.size(); i++) {
     // Weird, string interpolation, but strangely LIMITED?:
     def axisBenchValue = axisBench[i]
     tasks["${axisBenchValue}"] =
-        node(axisBenchValue) {
+        // node(axisBenchValue)
+        {
           println "Running test ${axisBenchValue}"
           // sh "echo Running test ${axisBenchValue}"
         }
