@@ -19,9 +19,15 @@ pipeline {
         dockerfile true
     }
     stages {
-        stage("Matrix") {
-            parallel tasks
-        }
+        parallel(one: {
+                  echo "I'm on the first branch!"
+                 },
+                 two: {
+                   echo "I'm on the second branch!"
+                 })
+        // stage("Matrix") {
+        //     parallel tasks
+        // }
     }
 }
 
