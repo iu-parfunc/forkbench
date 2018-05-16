@@ -4,7 +4,7 @@ CHPL = chpl
 all: spawntree install
 
 spawntree:
-	$(CHPL) -o spawntree spawntree.chpl
+	$(CHPL) --no-checks -o spawntree spawntree.chpl
 
 	
 install:
