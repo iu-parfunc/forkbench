@@ -15,9 +15,9 @@ HTML= $(out)/ghc-sparks.html $(out)/cloud-haskell.html \
       $(out)/io-threads.html $(out)/monad-par.html \
       $(out)/cilk.html $(out)/racket-futures.html \
       $(out)/charm-chare.html $(out)/chapel.html \
-      $(out)/java-forkjoin.html
+      $(out)/java-forkjoin.html $(out)/manticore.html
 
-ALLBUILDS = build-haskell build-cilk build-charm build-rust build-racket build-chapel build-java-forkjoin
+ALLBUILDS = build-haskell build-cilk build-charm build-rust build-racket build-manticore build-chapel build-java-forkjoin
 
 .phony: all build run-all rust racket $(ALLBUILDS) docker run-docker docker-here docker-clean
 
