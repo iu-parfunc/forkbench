@@ -114,12 +114,13 @@ $(out)/racket-futures.html:
 charm: $(out) build-charm $(out)/charm-chare.html
 $(out)/charm-chare.html:
 	./bin/criterion-external ./bin/spawnbench-charm-chare.exe \
-	    $(THREADS) +p$(THREADS) +setcpuaffinity \
+	    +p$(THREADS) +setcpuaffinity ++quiet \
 	    -- -o $@ --csv $(out)/charm-chare.csv -L 100
 
 chapel: $(out) build-chapel $(out)/chapel.html
 $(out)/chapel.html:
-	CHPL_RT_NUM_THREADS_PER_LOCALE=$(THREADS) ./bin/criterion-external "./bin/spawnbench-chapel.exe --n" \
+	CHPL_RT_NUM_THREADS_PER_LOCALE=$(THREADS) ./bin/criterion-external \
+	    "./bin/spawnbench-chapel.exe --n" \
 	    -- -o $@ --csv $(out)/chapel.csv -L 100
 
 
