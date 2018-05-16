@@ -17,7 +17,7 @@ for(int i=0; i< axisBench.size(); i++) {
 */
 
 
-def jobs = ["JobA", "JobB", "JobC"]
+def jobs = ["haskell", "cilk", "charm", "rust", "racket", "chapel"]
 
 def parallelStagesMap = jobs.collectEntries {
     ["${it}" : generateStage(it)]
@@ -27,7 +27,7 @@ def generateStage(job) {
     return {
         stage("stage: ${job}") {
                 echo "This is ${job}."
-                sh script: "sleep 15"
+                sh script: "make ${job}"
         }
     }
 }
@@ -83,6 +83,7 @@ pipeline {
             steps {
 //                sh 'make run-all'
                 sh 'echo After running tests...'
+                sh 'ls ./reports/*/'
             }
         }        
     }
