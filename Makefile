@@ -16,7 +16,7 @@ HTML= $(out)/ghc-sparks.html $(out)/cloud-haskell.html \
       $(out)/cilk.html $(out)/racket-futures.html \
       $(out)/charm-chare.html $(out)/chapel.html
 
-ALLBUILDS = build-haskell build-cilk build-charm build-rust build-chapel
+ALLBUILDS = build-haskell build-cilk build-charm build-rust build-racket build-chapel
 
 .phony: all build run-all rust racket $(ALLBUILDS) docker run-docker docker-here docker-clean
 
@@ -83,11 +83,13 @@ build-charm:
 #	./bin/criterion-external ./bin/spawnbench-hpx.exe --hpx-threads=$(THREADS) \
 #          -- -o $@ --csv $(out)/hpx.csv -L 100
 
+cilk: $(out) build-cilk $(out)/cilk.html
 $(out)/cilk.html:
 	CILK_NWORKERS=$(THREADS) ./bin/criterion-external ./bin/spawnbench-cilk.exe \
           -- -o $@ --csv $(out)/cilk.csv -L 10
 
 # These don't use criterion-external because they link the criterion library into the executables:
+haskell: $(out) build-haskell $(out)/monad-par.html $(out)/io-threads.html $(out)/ghc-sparks.html $(out)/cloud-haskell.html
 $(out)/monad-par.html:
 	./bin/forkbench-monad-par -o $@ --csv $(out)/monad-par.csv +RTS -N$(THREADS)
 
