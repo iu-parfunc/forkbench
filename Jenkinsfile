@@ -71,16 +71,16 @@ pipeline {
                 sh 'ls ./reports/*/'
                 sh 'apt-get -y install tree'
                 sh "tree reports -H '.' -L 2 --noreport --charset utf-8 > reports/index.html"
-                publishHTML([
-                    allowMissing: false, 
-                    alwaysLinkToLastBuild: false, 
-                    keepAll: false, 
-                    includes: 'reports/*/*',
-                    reportDir: 'reports', 
-                    reportFiles: 'index.html', 
-                    reportName: 'HTML Report', 
-                    reportTitles: 'Forkbench Results'
-                ])
+//                publishHTML([
+//                    allowMissing: false, 
+//                    alwaysLinkToLastBuild: false, 
+//                    keepAll: false, 
+//                    includes: 'reports/*/*',
+//                    reportDir: 'reports', 
+//                    reportFiles: 'index.html', 
+//                    reportName: 'HTML Report', 
+//                    reportTitles: 'Forkbench Results'
+//                ])
                 archiveArtifacts artifacts: 'reports/*/*', fingerprint: true
             }
         }        
