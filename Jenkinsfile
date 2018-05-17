@@ -81,7 +81,7 @@ pipeline {
 //                    reportName: 'HTML Report', 
 //                    reportTitles: 'Forkbench Results'
 //                ])
-                archiveArtifacts artifacts: 'reports/*/*', fingerprint: true
+                archiveArtifacts artifacts: 'reports/*', fingerprint: true
             }
         }        
     }
