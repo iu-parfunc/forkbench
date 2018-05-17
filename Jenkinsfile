@@ -47,7 +47,6 @@ pipeline {
         
         stage('Build') {
             steps {
-//                sh 'pwd'
                 sh 'cat /etc/issue'
                 sh 'make build'
 //              archiveArtifacts artifacts: 'bin/*', fingerprint: true
@@ -60,30 +59,25 @@ pipeline {
                     parallel parallelStagesMap
                 }
             }
-/*            
-            parallel {
-                stage("cilk") {
-                    steps {                        
-                        echo "Do cilk"
-                    }
-                }
-                stage("rust") {
-                    steps {                        
-                        echo "Do rust"
-                    }
-                }
-            }
-*/
         }
         // stage("Matrix") {
         //     parallel tasks
         // }
 
-        stage('After') {
+        stage('Publish') {
             steps {
 //                sh 'make run-all'
                 sh 'echo After running tests...'
                 sh 'ls ./reports/*/'
+                publishHTML([
+                    allowMissing: false, 
+                    alwaysLinkToLastBuild: false, 
+                    keepAll: false, 
+                    reportDir: 'reports', 
+                    reportFiles: 'index.html', 
+                    reportName: 'HTML Report', 
+                    reportTitles: 'Forkbench Results'
+                ])
             }
         }        
     }
