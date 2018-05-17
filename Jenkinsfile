@@ -69,9 +69,8 @@ pipeline {
 //                sh 'make run-all'
                 sh 'echo After running tests...'
                 sh 'ls ./reports/*/'
-                sh 'cd ./reports'
                 sh 'apt-get -y install tree'
-                sh "tree -H '.' -L 2 --noreport --charset utf-8 > index.html"
+                sh "tree -H '.' -L 2 --noreport --charset utf-8 > reports/index.html"
                 publishHTML([
                     allowMissing: false, 
                     alwaysLinkToLastBuild: false, 
@@ -81,7 +80,7 @@ pipeline {
                     reportName: 'HTML Report', 
                     reportTitles: 'Forkbench Results'
                 ])
-                archiveArtifacts artifacts: '/forkbench/reports/*/*', fingerprint: true
+                archiveArtifacts artifacts: 'reports/*/*', fingerprint: true
             }
         }        
     }
