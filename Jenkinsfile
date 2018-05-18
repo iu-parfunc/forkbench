@@ -58,8 +58,10 @@ pipeline {
                 timeout(time: 5, unit: 'MINUTES')
             }
             steps {
-                script {
-                    parallel parallelStagesMap
+		catchError {
+                    script {
+                        parallel parallelStagesMap
+                    }
                 }
             }
         }
@@ -75,16 +77,16 @@ pipeline {
                 sh 'apt-get -y install tree'
                 sh "tree reports -H '.' -L 2 --noreport --charset utf-8 > reports/index.html"
                 archiveArtifacts artifacts: 'reports/**/*', fingerprint: true
-                publishHTML([
-                    allowMissing: false, 
-                    alwaysLinkToLastBuild: false, 
-                    keepAll: false, 
-                    includes: 'reports/**/*',
-                    reportDir: 'reports', 
-                    reportFiles: 'index.html', 
-                    reportName: 'HTML Report', 
-                    reportTitles: 'Forkbench Results'
-                ])
+//                publishHTML([
+//                    allowMissing: false, 
+//                    alwaysLinkToLastBuild: false, 
+//                    keepAll: false, 
+//                    includes: 'reports/**/*',
+//                    reportDir: 'reports', 
+//                    reportFiles: 'index.html', 
+//                    reportName: 'HTML Report', 
+//                    reportTitles: 'Forkbench Results'
+//                ])
             }
         }        
     }
