@@ -29,11 +29,9 @@ def generateStage(job) {
             options {
                 timeout(time: 5, unit: 'MINUTES')
             }
-            catchError {
-                steps {
-                    echo "This is ${job}."
-                    sh script: "make ${job}"
-                }
+            steps {
+                echo "This is ${job}."
+                sh script: "make ${job}"
             }
         }
     }
