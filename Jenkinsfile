@@ -26,8 +26,13 @@ def parallelStagesMap = jobs.collectEntries {
 def generateStage(job) {
     return {
         stage("stage: ${job}") {
+            options {
+                timeout(time: 5, unit: 'MINUTES')
+            }
+            catchError {
                 echo "This is ${job}."
                 sh script: "make ${job}"
+            }
         }
     }
 }
@@ -71,17 +76,17 @@ pipeline {
                 sh 'ls ./reports/*/'
                 sh 'apt-get -y install tree'
                 sh "tree reports -H '.' -L 2 --noreport --charset utf-8 > reports/index.html"
-//                publishHTML([
-//                    allowMissing: false, 
-//                    alwaysLinkToLastBuild: false, 
-//                    keepAll: false, 
-//                    includes: 'reports/*/*',
-//                    reportDir: 'reports', 
-//                    reportFiles: 'index.html', 
-//                    reportName: 'HTML Report', 
-//                    reportTitles: 'Forkbench Results'
-//                ])
                 archiveArtifacts artifacts: 'reports/**/*', fingerprint: true
+                publishHTML([
+                    allowMissing: false, 
+                    alwaysLinkToLastBuild: false, 
+                    keepAll: false, 
+                    includes: 'reports/**/*',
+                    reportDir: 'reports', 
+                    reportFiles: 'index.html', 
+                    reportName: 'HTML Report', 
+                    reportTitles: 'Forkbench Results'
+                ])
             }
         }        
     }
