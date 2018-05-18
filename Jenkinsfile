@@ -26,13 +26,8 @@ def parallelStagesMap = jobs.collectEntries {
 def generateStage(job) {
     return {
         stage("stage: ${job}") {
-            options {
-                timeout(time: 5, unit: 'MINUTES')
-            }
-            steps {
-                echo "This is ${job}."
-                sh script: "make ${job}"
-            }
+            echo "This is ${job}."
+            sh script: "make ${job}"
         }
     }
 }
@@ -59,6 +54,9 @@ pipeline {
         }        
         
         stage ("parallel") {
+            options {
+                timeout(time: 5, unit: 'MINUTES')
+            }
             steps {
                 script {
                     parallel parallelStagesMap
