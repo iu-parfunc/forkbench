@@ -75,8 +75,8 @@ pipeline {
                 sh 'echo After running tests...'
                 sh 'ls ./reports/*/'
                 sh 'apt-get -y install tree jq'
+                sh "for i in `ls reports/*/*.json`;do echo $i | sed 's/[^0-9]*//g'; jq '.[2] | .[0] | .reportName' $i; jq '.[2] | .[0] | .reportAnalysis | .anRegress | .[0] | .regCoeffs | .iters | .estPoint' $i ;done > reports/all.txt"
                 sh "tree reports -H '.' -L 2 --noreport --charset utf-8 > reports/index.html"
-                sh "for i in `ls reports/*/*.json`;do jq '.[2] | .[0] | .reportName' $i; jq '.[2] | .[0] | .reportAnalysis | .anRegress | .[0] | .regCoeffs | .iters | .estPoint' $i ;done > reports/all.txt"
                 archiveArtifacts artifacts: 'reports/**/*', fingerprint: true
 //                publishHTML([
 //                    allowMissing: false, 
