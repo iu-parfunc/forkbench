@@ -18,7 +18,7 @@ RUN stack --system-ghc build --only-dependencies
 # # See clean_checkout in the Makefile for how to make sure this isn't too much data:
 ADD . /forkbench
 
-RUN make build-haskell
+RUN make build
 
 # RUN make build-cilk
 # # RUN make build-rust
