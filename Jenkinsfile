@@ -27,7 +27,7 @@ def generateStage(job) {
     return {
         stage("stage: ${job}") {
             echo "This is ${job}."
-            sh script: "make ${job}"
+            sh script: "./thread_sweep.sh ${job}"
         }
     }
 }
