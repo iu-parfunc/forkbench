@@ -82,58 +82,58 @@ build-charm:
 #hpx: $(out) $(out)/hpx.html
 #$(out)/hpx.html:
 #	./bin/criterion-external ./bin/spawnbench-hpx.exe --hpx-threads=$(THREADS) \
-#          -- -o $@ --csv $(out)/hpx.csv -L 100
+#          -- -o $@ --json $(out)/hpx.json -L 100
 
 cilk: $(out) build-cilk $(out)/cilk.html
 $(out)/cilk.html:
 	CILK_NWORKERS=$(THREADS) ./bin/criterion-external ./bin/spawnbench-cilk.exe \
-          -- -o $@ --csv $(out)/cilk.csv -L 10
+          -- -o $@ --json $(out)/cilk.json -L 10
 
 # These don't use criterion-external because they link the criterion library into the executables:
 haskell: $(out) build-haskell $(out)/monad-par.html $(out)/io-threads.html $(out)/ghc-sparks.html $(out)/cloud-haskell.html
 $(out)/monad-par.html:
-	./bin/forkbench-monad-par -o $@ --csv $(out)/monad-par.csv +RTS -N$(THREADS)
+	./bin/forkbench-monad-par -o $@ --json $(out)/monad-par.json +RTS -N$(THREADS)
 
 $(out)/io-threads.html:
-	./bin/forkbench-io-threads.exe -o $@ --csv $(out)/io-threads.csv +RTS -N$(THREADS)
+	./bin/forkbench-io-threads.exe -o $@ --json $(out)/io-threads.json +RTS -N$(THREADS)
 
 $(out)/ghc-sparks.html:
-	./bin/forkbench-ghc-sparks -o $@ --csv $(out)/ghc-sparks.csv +RTS -N$(THREADS)
+	./bin/forkbench-ghc-sparks -o $@ --json $(out)/ghc-sparks.json +RTS -N$(THREADS)
 
 $(out)/cloud-haskell.html:
-	./bin/forkbench-cloud-haskell -o $@ --csv $(out)/cloud-haskell.csv -L 10 +RTS -N$(THREADS)
+	./bin/forkbench-cloud-haskell -o $@ --json $(out)/cloud-haskell.json -L 10 +RTS -N$(THREADS)
 
 rust: $(out) build-rust $(out)/rust-rayon.html
 $(out)/rust-rayon.html: 
-	NUM_THREADS=$(THREADS) ./bin/criterion-external ./bin/spawnbench-rust-rayon.exe -- -o $@ --csv $(out)/rust-rayon.csv -L 10
+	NUM_THREADS=$(THREADS) ./bin/criterion-external ./bin/spawnbench-rust-rayon.exe -- -o $@ --json $(out)/rust-rayon.json -L 10
 
 racket: $(out) build-racket $(out)/racket-futures.html
 $(out)/racket-futures.html: 
 	./bin/criterion-external ./racket/spawnbench.rkt \
-          -- -o $@ --csv $(out)/racket-futures.csv -L 100
+          -- -o $@ --json $(out)/racket-futures.json -L 100
 
 charm: $(out) build-charm $(out)/charm-chare.html
 $(out)/charm-chare.html:
 	./bin/criterion-external ./bin/spawnbench-charm-chare.exe \
 	    +p$(THREADS) +setcpuaffinity ++quiet \
-	    -- -o $@ --csv $(out)/charm-chare.csv -L 100
+	    -- -o $@ --json $(out)/charm-chare.json -L 100
 
 chapel: $(out) build-chapel $(out)/chapel.html
 $(out)/chapel.html:
 	CHPL_RT_NUM_THREADS_PER_LOCALE=$(THREADS) ./bin/criterion-external \
 	    "./bin/spawnbench-chapel.exe --n" \
-	    -- -o $@ --csv $(out)/chapel.csv -L 100
+	    -- -o $@ --json $(out)/chapel.json -L 100
 
 
 manticore: $(out) build-manticore $(out)/manticore.html
 run-manticore: $(out) $(out)/manticore.html
 $(out)/manticore.html: 
 	./bin/criterion-external ./bin/spawnbench-manticore.exe -p $(THREADS) \
-          -- -o $@ --csv $(out)/manticore.csv -L 10;
+          -- -o $@ --json $(out)/manticore.json -L 10;
 #	if [ "$(THREADS)" == "02" ]; then \
          echo "Manticore fails at 2 threads"; \
         else ./bin/criterion-external ./bin/spawnbench-manticore.exe -p $(THREADS) \
-          -- -o $@ --csv $(out)/manticore.csv -L 10; \
+          -- -o $@ --json $(out)/manticore.json -L 10; \
         fi
 
 java-forkjoin: $(out) build-java-forkjoin $(out)/java-forkjoin.html
@@ -143,7 +143,7 @@ run-java-forkjoin: $(out) $(out)/java-forkjoin.html
 # For now we just run for a really long time.  This gets to ~100M spawns on 1 thread:
 $(out)/java-forkjoin.html: 
 	NUM_THREADS=$(THREADS) ./bin/criterion-external "java -XX:-AggressiveOpts -XX:-TieredCompilation -jar ./bin/ForkBench.jar" \
-          -- -o $@ --csv $(out)/java-forkjoin.csv -L 100;
+          -- -o $@ --json $(out)/java-forkjoin.json -L 100;
 
 
 # Docker
