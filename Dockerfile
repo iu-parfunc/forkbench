@@ -20,6 +20,7 @@ ADD . /forkbench
 
 RUN make build
 
+RUN apt-get update && apt-get -y install tree jq
 # RUN make build-cilk
 # # RUN make build-rust
 # # RUN make build-hpx
