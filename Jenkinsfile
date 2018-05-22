@@ -39,7 +39,7 @@ pipeline {
         dockerfile /* true */ {
             // filename 'Dockerfile.build'
             // dir 'build'
-            label 'cutter02'
+            label 'cutter07'
             // additionalBuildArgs  '--build-arg version=1.0.2'
         }
     }
