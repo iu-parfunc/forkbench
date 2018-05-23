@@ -74,7 +74,7 @@ pipeline {
 //                sh 'make run-all'
                 sh 'echo After running tests...'
                 sh 'ls ./reports/*/'
-                sh './gather_json.sh > ./reports/all.txt'
+                sh './gather_json.sh'
                 sh "tree reports -H '.' -L 2 --noreport --charset utf-8 > reports/index.html"
                 archiveArtifacts artifacts: 'reports/**/*', fingerprint: true
 //                publishHTML([
