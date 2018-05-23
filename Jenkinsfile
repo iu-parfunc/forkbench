@@ -55,7 +55,7 @@ pipeline {
         
         stage ("parallel") {
             options {
-                timeout(time: 5, unit: 'MINUTES')
+                timeout(time: 60, unit: 'MINUTES')
             }
             steps {
 		catchError {
