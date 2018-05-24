@@ -1,6 +1,6 @@
 
 
-all: build
+all: run
 
-build:
+run:
 	stack --system-ghc runghc --package Chart --package Chart-cairo -- Main.hs
