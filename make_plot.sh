@@ -1,3 +1,5 @@
+#!/bin/bash
+
 NL=`wc -l < ./reports/all_4_plot.txt`
 
 for ii in $( eval echo {1..$NL} )
