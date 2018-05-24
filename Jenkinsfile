@@ -75,7 +75,7 @@ pipeline {
                 sh 'echo After running tests...'
                 sh 'ls ./reports/*/'
                 sh './gather_json.sh'
-                sh './make_plot.sh'
+                sh 'bash ./make_plot.sh'
                 sh "tree reports -H '.' -L 2 --noreport --charset utf-8 > reports/index.html"
                 archiveArtifacts artifacts: 'reports/**/*', fingerprint: true
 //                publishHTML([
