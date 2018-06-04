@@ -39,7 +39,7 @@ pipeline {
         dockerfile /* true */ {
             // filename 'Dockerfile.build'
             // dir 'build'
-            label 'cutter08'
+            label 'hive'
             // additionalBuildArgs  '--build-arg version=1.0.2'
         }
     }
@@ -58,7 +58,7 @@ pipeline {
                 timeout(time: 60, unit: 'MINUTES')
             }
             steps {
-		catchError {
+                catchError {
                     script {
                         parallel parallelStagesMap
                     }
