@@ -29,6 +29,9 @@ do
             set xlabel 'Num of Threads';
             set ylabel 'Spawn per Second';
             set logscale y;
+            set format y '10^{%L}';
+            set xrange [1:];
+            set xtics 1;
             unset key;
             plot '<cat' with linespoints
             "
