@@ -77,7 +77,9 @@ set title 'forkbench';
 set xlabel 'Num of Threads';
 set ylabel 'Spawn per Second';
 set logscale y;
+set format y '10^{%L}';
 set xrange [1:];
+set xtics 1;
 set key out vert;
 set key reverse center right;" > tmp.plotcommand
 
