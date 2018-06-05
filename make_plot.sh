@@ -77,7 +77,9 @@ set title 'forkbench';
 set xlabel 'Num of Threads';
 set ylabel 'Spawn per Second';
 set logscale y;
-set key reverse left bottom;" > tmp.plotcommand
+set xrange [1:];
+set key out vert;
+set key reverse center right;" > tmp.plotcommand
 
 PLOTNAME=`sed -n "1p" < tmp.titles`
 echo "plot 'tmp.data' using 1:2 title '$PLOTNAME' with linespoints, \\" >> tmp.plotcommand
