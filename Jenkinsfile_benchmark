@@ -35,10 +35,13 @@ def generateStage(job) {
 
 pipeline {
     agent {
-        label 'hive'
+        docker {
+            image 'parfunc/forkbench'
+            label 'hive'
+        }
     }
-    docker.image('parfunc/forkbench').inside {
-        stages {
+    stages {
+        docker.image('parfunc/forkbench').inside {
             stage ("parallel") {
                 options {
                     timeout(time: 60, unit: 'MINUTES')
