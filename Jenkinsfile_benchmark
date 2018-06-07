@@ -1,5 +1,3 @@
-node {
-    checkout scm
 /*
 def axisBench = ["cilk","rust"] // etc...
 def tasks = [:]
@@ -34,17 +32,21 @@ def generateStage(job) {
 }
 
 
-//pipeline {
-//    agent {
-//        docker {
-//            image 'parfunc/forkbench'
-//            label 'hive'
-//        }
-//    }
+pipeline {
     agent {
-        label 'hive'
+        docker {
+            image 'parfunc/forkbench'
+            label 'hive'
+        }
     }
-    docker.image('parfunc/forkbench').inside {
+    stages {
+        stage ("check") {
+            steps {
+                sh 'ls -a /'
+                sh 'ls -a ./'
+                sh 'ls -a ./bin'
+            }
+        }
         stage ("parallel") {
             options {
                 timeout(time: 60, unit: 'MINUTES')
@@ -78,6 +80,6 @@ def generateStage(job) {
 //                ])
             }
         }        
-      }
-//}
+    }
 }
+
