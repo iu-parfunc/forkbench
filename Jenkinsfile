@@ -49,6 +49,7 @@ pipeline {
             steps {
                 //sh 'cat /etc/issue'
                 //sh 'make build'
+                sh 'pwd'
                 sh 'ls ./bin'
 //              archiveArtifacts artifacts: 'bin/*', fingerprint: true
             }
