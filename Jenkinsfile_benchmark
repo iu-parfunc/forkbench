@@ -34,20 +34,19 @@ def generateStage(job) {
 
 pipeline {
     agent {
-        //docker {
-        //    image 'parfunc/forkbench'
-        //    alwaysPull true
+        docker {
+            image 'parfunc/forkbench'
+            alwaysPull true
             label 'hive'
-        //}
+        }
     }
     stages {
         stage ("check") {
             steps {
-                sh 'docker pull parfunc/forkbench'
-                sh 'docker run -it parfunc/forkbench'
+                sh 'pwd'
                 sh 'ls -a /'
                 sh 'ls -a ./'
-                sh 'ls -a ./bin'
+                sh 'ls -a ./*/'
             }
         }
         stage ("parallel") {
