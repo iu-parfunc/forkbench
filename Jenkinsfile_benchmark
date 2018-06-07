@@ -33,13 +33,15 @@ def generateStage(job) {
 }
 
 
-pipeline {
+node {
     agent {
         docker {
             image 'parfunc/forkbench'
             label 'hive'
         }
     }
+    stage "Prepare environment"
+        checkout scm
         docker.image('parfunc/forkbench').inside {
             stage ("parallel") {
                 options {
