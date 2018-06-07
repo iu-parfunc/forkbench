@@ -36,6 +36,7 @@ pipeline {
     agent {
         docker {
             image 'parfunc/forkbench'
+            alwaysPull true
             label 'hive'
         }
     }
