@@ -38,8 +38,8 @@ pipeline {
         // A node RN & IW manually installed Docker on:
         docker /* true */ {
             image 'parfunc/forkbench'
+            label 'hive'
         }
-        label 'hive'
     }
     stages {
         stage ("parallel") {
