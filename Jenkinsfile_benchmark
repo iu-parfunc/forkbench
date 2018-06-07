@@ -1,4 +1,5 @@
-
+node {
+    checkout scm
 /*
 def axisBench = ["cilk","rust"] // etc...
 def tasks = [:]
@@ -79,4 +80,4 @@ def generateStage(job) {
         }        
       }
 //}
-
+}
