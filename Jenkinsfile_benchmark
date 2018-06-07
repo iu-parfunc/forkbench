@@ -40,8 +40,6 @@ pipeline {
             label 'hive'
         }
     }
-    stages {
-        stage "Run in Docker"
         docker.image('parfunc/forkbench').inside {
             stage ("parallel") {
                 options {
@@ -77,6 +75,5 @@ pipeline {
                 }
             }        
         }
-    }
 }
 
