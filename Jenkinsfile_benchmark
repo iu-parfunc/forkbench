@@ -45,6 +45,7 @@ pipeline {
             steps {
                 sh 'pwd'
                 sh 'ls -a /'
+                sh 'cd /forkbench'
                 sh 'ls -a ./'
                 sh 'ls -a ./*/'
             }
