@@ -35,46 +35,44 @@ def generateStage(job) {
 
 pipeline {
     agent {
-        // A node RN & IW manually installed Docker on:
-        docker /* true */ {
-            image 'parfunc/forkbench'
-            label 'hive'
-        }
+        label 'hive'
     }
-    stages {
-        stage ("parallel") {
-            options {
-                timeout(time: 60, unit: 'MINUTES')
-            }
-            steps {
-                catchError {
-                    script {
-                        parallel parallelStagesMap
+    docker.image('parfunc/forkbench').inside {
+        stages {
+            stage ("parallel") {
+                options {
+                    timeout(time: 60, unit: 'MINUTES')
+                }
+                steps {
+                    catchError {
+                        script {
+                            parallel parallelStagesMap
+                        }
                     }
                 }
             }
-        }
 
-        stage('Publish') {
-            steps {
-                sh 'echo After running tests...'
-                sh 'ls ./reports/*/'
-                sh './gather_json.sh'
-                sh 'bash ./make_plot.sh'
-                sh "tree reports -H '.' -L 2 --noreport --charset utf-8 > reports/index.html"
-                archiveArtifacts artifacts: 'reports/**/*', fingerprint: true
-//                publishHTML([
-//                    allowMissing: false, 
-//                    alwaysLinkToLastBuild: false, 
-//                    keepAll: false, 
-//                    includes: 'reports/**/*',
-//                    reportDir: 'reports', 
-//                    reportFiles: 'index.html', 
-//                    reportName: 'HTML Report', 
-//                    reportTitles: 'Forkbench Results'
-//                ])
-            }
-        }        
+            stage('Publish') {
+                steps {
+                    sh 'echo After running tests...'
+                    sh 'ls ./reports/*/'
+                    sh './gather_json.sh'
+                    sh 'bash ./make_plot.sh'
+                    sh "tree reports -H '.' -L 2 --noreport --charset utf-8 > reports/index.html"
+                    archiveArtifacts artifacts: 'reports/**/*', fingerprint: true
+//                    publishHTML([
+//                        allowMissing: false, 
+//                        alwaysLinkToLastBuild: false, 
+//                        keepAll: false, 
+//                        includes: 'reports/**/*',
+//                        reportDir: 'reports', 
+//                        reportFiles: 'index.html', 
+//                        reportName: 'HTML Report', 
+//                        reportTitles: 'Forkbench Results'
+//                    ])
+                }
+            }        
+        }
     }
 }
 
