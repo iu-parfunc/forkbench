@@ -47,8 +47,9 @@ pipeline {
         
         stage('Build') {
             steps {
-                sh 'cat /etc/issue'
-                sh 'make build'
+                //sh 'cat /etc/issue'
+                //sh 'make build'
+                sh 'ls ./bin'
 //              archiveArtifacts artifacts: 'bin/*', fingerprint: true
             }
         }        
