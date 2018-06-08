@@ -8,9 +8,11 @@ fun spawnbench (n: int) : int =
   then 1
   else let val half = n div 2
            val half2 = half + n mod 2
-           (* These two can be pval: *)
+	   (* Use parallel tuples instead of pval because the former
+	      is currently better optimized by Manticore -- Mike
            pval x = spawnbench (half2-1)
-           pval y = spawnbench half
+           pval y = spawnbench half *)
+	   val (x, y) = (| spawnbench (half2-1), spawnbench half |)
        in
           x+y
        end
