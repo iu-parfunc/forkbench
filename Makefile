@@ -15,9 +15,10 @@ HTML= $(out)/ghc-sparks.html $(out)/cloud-haskell.html \
       $(out)/io-threads.html $(out)/monad-par.html \
       $(out)/cilk.html $(out)/racket-futures.html \
       $(out)/charm-chare.html $(out)/chapel.html \
-      $(out)/java-forkjoin.html $(out)/manticore.html
+      $(out)/java-forkjoin.html $(out)/manticore.html \
+	  $(out)/x10.html
 
-ALLBUILDS = build-haskell build-cilk build-charm build-rust build-racket build-manticore build-chapel build-java-forkjoin
+ALLBUILDS = build-haskell build-cilk build-charm build-rust build-racket build-manticore build-chapel build-java-forkjoin build-x10
 
 .phony: all build run-all rust racket $(ALLBUILDS) docker run-docker docker-here docker-clean
 
@@ -69,6 +70,9 @@ build-chapel:
 
 build-charm:
 	(cd charm && make)
+
+build-x10:
+	(cd x10 && make)
 # Running
 # ----------------------------------------
 
@@ -124,6 +128,11 @@ $(out)/chapel.html:
 	    "./bin/spawnbench-chapel.exe --n" \
 	    -- -o $@ --json $(out)/chapel.json -L 100
 
+x10: $(out) build-x10 $(out)/x10.html
+$(out)/x10.html:
+	X10_NTHREADS=$(THREADS) ./bin/criterion-external \
+         "./bin/spawnbench-x10.exe" \
+         -- -o $@ --json $(out)/x10.json -L 100
 
 manticore: $(out) build-manticore $(out)/manticore.html
 run-manticore: $(out) $(out)/manticore.html
