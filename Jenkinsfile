@@ -17,7 +17,7 @@ for(int i=0; i< axisBench.size(); i++) {
 */
 
 
-def jobs = ["haskell", "cilk", "rust", "racket", "manticore", "java-forkjoin", "charm", "chapel"]
+def jobs = ["haskell", "cilk", "rust", "racket", "manticore", "java-forkjoin", "charm", "chapel", "x10"]
 
 def parallelStagesMap = jobs.collectEntries {
     ["${it}" : generateStage(it)]
