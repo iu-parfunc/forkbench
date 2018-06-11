@@ -16,9 +16,9 @@ HTML= $(out)/ghc-sparks.html $(out)/cloud-haskell.html \
       $(out)/cilk.html $(out)/racket-futures.html \
       $(out)/charm-chare.html $(out)/chapel.html \
       $(out)/java-forkjoin.html $(out)/manticore.html \
-	  $(out)/x10.html
+	  $(out)/x10.html $(out)/pthread.html
 
-ALLBUILDS = build-haskell build-cilk build-charm build-rust build-racket build-manticore build-chapel build-java-forkjoin build-x10
+ALLBUILDS = build-haskell build-cilk build-charm build-rust build-racket build-manticore build-chapel build-java-forkjoin build-x10 build-pthread
 
 .phony: all build run-all rust racket $(ALLBUILDS) docker run-docker docker-here docker-clean
 
@@ -49,6 +49,9 @@ build-manticore:
 
 build-java-forkjoin:
 	cd java-forkjoin && make
+
+build-pthread:
+	cd pthread && make
 
 $(out):
 	mkdir -p $(out)
@@ -133,6 +136,12 @@ $(out)/x10.html:
 	X10_NTHREADS=$(THREADS) ./bin/criterion-external \
          "./bin/spawnbench-x10.exe" \
          -- -o $@ --json $(out)/x10.json -L 100
+
+pthread: $(out) build-pthread $(out)/pthread.html
+$(out)/pthread.html:
+	X10_NTHREADS=$(THREADS) ./bin/criterion-external \
+          "./bin/spawnbench-pthread.exe" \
+          -- -o $@ --json $(out)/pthread.json -L 10
 
 manticore: $(out) build-manticore $(out)/manticore.html
 run-manticore: $(out) $(out)/manticore.html
