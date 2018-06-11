@@ -139,7 +139,7 @@ $(out)/x10.html:
 
 pthread: $(out) build-pthread $(out)/pthread.html
 $(out)/pthread.html:
-	X10_NTHREADS=$(THREADS) ./bin/criterion-external \
+	taskset -c `seq -s, 0 \`expr $(THREADS) - 1\`` ./bin/criterion-external \
           "./bin/spawnbench-pthread.exe" \
           -- -o $@ --json $(out)/pthread.json -L 10
 
